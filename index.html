@@ -3,71 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL PRO | Bloomberg Style Market Data</title>
+    <title>FinZee | Professional Market Terminal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0a0a0a;
-            --bg-panel: #121212;
-            --bg-card: #181818;
-            --bg-hover: #1f1f1f;
-            --border-color: #2d2d2d;
-            --border-light: #3a3a3a;
-            --text-primary: #f0f0f0;
-            --text-secondary: #a0a0a0;
-            --text-muted: #666666;
+            /* Dark Grey Theme */
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --bg-hover: #30363d;
+            --bg-card: #1c2128;
             
-            /* Smooth Warm Orange-Yellow Palette */
-            --amber-primary: #ffb347;
-            --amber-bright: #ffc857;
-            --amber-glow: #ffaa33;
-            --amber-soft: #ffd17a;
-            --amber-dim: #cc8a2b;
-            --amber-dark: #8b5a00;
+            --border-subtle: #30363d;
+            --border-default: #484f58;
+            --border-highlight: #6e7681;
             
-            --accent-green: #4ade80;
-            --accent-green-dim: #22c55e;
-            --accent-green-glow: rgba(74, 222, 128, 0.3);
-            --accent-red: #f87171;
-            --accent-red-dim: #ef4444;
-            --accent-red-glow: rgba(248, 113, 113, 0.3);
-            --accent-blue: #60a5fa;
-            --accent-cyan: #22d3ee;
+            /* Blue Accent Palette */
+            --blue-primary: #58a6ff;
+            --blue-bright: #79c0ff;
+            --blue-dim: #388bfd;
+            --blue-dark: #1f6feb;
+            --blue-glow: rgba(88, 166, 255, 0.15);
+            
+            /* Functional Colors */
+            --green-up: #3fb950;
+            --green-up-dim: #2ea043;
+            --green-glow: rgba(63, 185, 80, 0.2);
+            --red-down: #f85149;
+            --red-down-dim: #da3633;
+            --red-glow: rgba(248, 81, 73, 0.2);
+            
+            /* Text Colors */
+            --text-primary: #f0f6fc;
+            --text-secondary: #c9d1d9;
+            --text-muted: #8b949e;
+            --text-subtle: #6e7681;
         }
 
         * {
-            font-family: 'Courier Prime', 'Courier New', monospace;
+            font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
             box-sizing: border-box;
-            font-size: 13px;
+            font-size: 12px;
             letter-spacing: -0.2px;
         }
 
         body {
-            background: var(--bg-dark);
+            background: var(--bg-primary);
             color: var(--text-primary);
             overflow: hidden;
             height: 100vh;
-            line-height: 1.3;
+            line-height: 1.4;
         }
 
         /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--amber-primary); }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-default); }
 
         /* Layout */
         .terminal-grid {
             display: grid;
-            grid-template-rows: 32px 36px 40px 1fr;
+            grid-template-rows: 36px 40px 44px 1fr;
             height: 100vh;
             gap: 1px;
-            background: var(--border-color);
+            background: var(--border-subtle);
         }
 
         .cell {
-            background: var(--bg-dark);
+            background: var(--bg-primary);
             overflow: hidden;
         }
 
@@ -76,24 +81,53 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 16px;
-            background: var(--bg-panel);
-            border-bottom: 1px solid var(--border-color);
+            padding: 0 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-subtle);
         }
 
         .logo {
-            color: var(--amber-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-dark) 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 700;
-            font-size: 15px;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 179, 71, 0.3);
+            color: white;
+            font-size: 14px;
+            box-shadow: 0 0 15px var(--blue-glow);
+        }
+
+        .logo-text {
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .logo-sub {
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 500;
+            margin-left: 8px;
+            padding-left: 8px;
+            border-left: 1px solid var(--border-default);
         }
 
         /* Ticker */
         .ticker-wrap {
             overflow: hidden;
             white-space: nowrap;
-            background: var(--bg-panel);
+            background: var(--bg-secondary);
             display: flex;
             align-items: center;
             position: relative;
@@ -101,7 +135,7 @@
 
         .ticker-content {
             display: inline-flex;
-            animation: ticker 90s linear infinite;
+            animation: ticker 80s linear infinite;
         }
 
         @keyframes ticker {
@@ -114,36 +148,54 @@
             align-items: center;
             gap: 8px;
             padding: 0 28px;
-            border-right: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
-        .ticker-symbol { color: var(--amber-primary); font-weight: 700; font-size: 14px; }
-        .ticker-price { color: var(--text-primary); font-weight: 600; font-size: 13px; }
-        .ticker-change { font-weight: 700; font-size: 13px; }
+        .ticker-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .ticker-symbol { 
+            color: var(--blue-primary); 
+            font-weight: 600; 
+            font-size: 13px; 
+        }
+        .ticker-price { 
+            color: var(--text-primary); 
+            font-weight: 500; 
+            font-size: 12px; 
+        }
+        .ticker-change { 
+            font-weight: 600; 
+            font-size: 12px; 
+        }
 
         /* Navigation Tape - Full Width */
         .nav-tape {
             display: flex;
-            background: var(--bg-panel);
-            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-subtle);
             width: 100%;
         }
 
         .nav-item {
             flex: 1;
-            padding: 10px 8px;
+            padding: 12px 8px;
             cursor: pointer;
-            border-right: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            transition: all 0.15s ease;
+            border-right: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            transition: all 0.2s ease;
             white-space: nowrap;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            font-weight: 600;
-            font-size: 12px;
-            text-align: center;
+            gap: 8px;
+            font-weight: 500;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
         }
 
         .nav-item:last-child {
@@ -151,60 +203,56 @@
         }
 
         .nav-item:hover {
-            background: var(--bg-card);
-            color: var(--amber-soft);
+            background: var(--bg-hover);
+            color: var(--text-secondary);
         }
 
         .nav-item.active {
-            background: linear-gradient(135deg, var(--amber-primary) 0%, var(--amber-glow) 100%);
-            color: var(--bg-dark);
-            font-weight: 700;
-            box-shadow: 0 0 15px rgba(255, 179, 71, 0.4);
+            background: var(--bg-tertiary);
+            color: var(--blue-primary);
+            border-bottom: 2px solid var(--blue-primary);
+            font-weight: 600;
         }
 
         /* Main Content */
         .main-content {
             overflow: auto;
-            padding: 12px;
+            padding: 16px;
         }
 
         .view-section { display: none; }
         .view-section.active { display: block; }
 
-        /* Cards */
+        /* Cards - Clean Professional */
         .card {
             background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            margin-bottom: 12px;
-            border-radius: 4px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.5);
-            transition: all 0.2s ease;
-        }
-
-        .card:hover {
-            border-color: var(--amber-dim);
-            box-shadow: 0 4px 20px rgba(255, 179, 71, 0.1);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
 
         .card-header {
-            background: linear-gradient(90deg, rgba(255,179,71,0.12) 0%, var(--bg-panel) 50%, rgba(255,179,71,0.06) 100%);
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--amber-primary);
-            font-weight: 700;
+            background: var(--bg-secondary);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 11px;
             text-transform: uppercase;
+            letter-spacing: 1px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 12px;
-            letter-spacing: 0.8px;
+            font-family: 'Inter', sans-serif;
         }
 
         .card-body {
-            padding: 12px;
+            padding: 16px;
         }
 
-        /* Enhanced Tables */
+        /* Tables - Clean Data Display */
         .data-table {
             width: 100%;
             border-collapse: separate;
@@ -213,58 +261,64 @@
         }
 
         .data-table th {
-            background: linear-gradient(180deg, var(--bg-panel) 0%, rgba(255,179,71,0.08) 100%);
-            color: var(--amber-primary);
+            background: var(--bg-secondary);
+            color: var(--text-muted);
             padding: 10px 12px;
             text-align: left;
-            font-weight: 700;
-            border-bottom: 2px solid var(--amber-dim);
-            position: sticky;
-            top: 0;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-default);
             text-transform: uppercase;
             font-size: 10px;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
         }
 
         .data-table td {
-            padding: 8px 12px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-subtle);
             color: var(--text-primary);
             transition: all 0.15s ease;
         }
 
         .data-table tr:hover td {
-            background: linear-gradient(90deg, rgba(255,179,71,0.1) 0%, rgba(255,179,71,0.04) 100%);
+            background: var(--bg-hover);
             cursor: pointer;
-            border-bottom-color: var(--amber-dim);
         }
 
-        .data-table tr:nth-child(even) td {
-            background: rgba(255, 255, 255, 0.02);
+        .data-table tr:last-child td {
+            border-bottom: none;
         }
 
-        /* Badge Style for Tickers */
+        /* Ticker Badges */
         .ticker-badge {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
             padding: 3px 10px;
-            background: linear-gradient(135deg, rgba(255,179,71,0.15) 0%, rgba(255,200,87,0.1) 100%);
-            border: 1px solid var(--amber-dim);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
             border-radius: 4px;
-            color: var(--amber-primary);
-            font-weight: 700;
+            color: var(--blue-primary);
+            font-weight: 600;
             font-size: 11px;
-            text-shadow: 0 0 5px rgba(255, 179, 71, 0.3);
-            box-shadow: 0 0 10px rgba(255, 179, 71, 0.1);
+            font-family: 'JetBrains Mono', monospace;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .ticker-badge:hover {
-            background: linear-gradient(135deg, rgba(255,179,71,0.3) 0%, rgba(255,200,87,0.2) 100%);
-            box-shadow: 0 0 15px rgba(255, 179, 71, 0.3);
-            transform: translateY(-1px);
+            background: var(--blue-glow);
+            border-color: var(--blue-dim);
+            color: var(--blue-bright);
+        }
+
+        /* Change Colors - Red/Green */
+        .change-up {
+            color: var(--green-up);
+            font-weight: 600;
+        }
+        .change-down {
+            color: var(--red-down);
+            font-weight: 600;
         }
 
         /* Recommendation Badges */
@@ -273,69 +327,118 @@
             align-items: center;
             padding: 3px 10px;
             border-radius: 4px;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
         }
 
         .rec-buy {
-            background: linear-gradient(135deg, rgba(74, 222, 128, 0.25) 0%, rgba(34, 197, 94, 0.15) 100%);
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green-dim);
-            box-shadow: 0 0 10px var(--accent-green-glow);
+            background: var(--green-glow);
+            color: var(--green-up);
+            border: 1px solid var(--green-up-dim);
         }
 
         .rec-sell {
-            background: linear-gradient(135deg, rgba(248, 113, 113, 0.25) 0%, rgba(239, 68, 68, 0.15) 100%);
-            color: var(--accent-red);
-            border: 1px solid var(--accent-red-dim);
-            box-shadow: 0 0 10px var(--accent-red-glow);
+            background: var(--red-glow);
+            color: var(--red-down);
+            border: 1px solid var(--red-down-dim);
         }
 
         .rec-hold {
-            background: linear-gradient(135deg, rgba(255,179,71,0.25) 0%, rgba(255,170,51,0.15) 100%);
-            color: var(--amber-primary);
-            border: 1px solid var(--amber-dim);
-            box-shadow: 0 0 10px rgba(255, 179, 71, 0.2);
+            background: var(--blue-glow);
+            color: var(--blue-primary);
+            border: 1px solid var(--blue-dim);
         }
 
         /* Grid Layouts */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
 
-        /* Enhanced Mini Cards */
+        /* Metric Cards */
+        .metric-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 16px;
+            transition: all 0.2s;
+        }
+
+        .metric-card:hover {
+            border-color: var(--border-default);
+            background: var(--bg-hover);
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .metric-change {
+            font-size: 11px;
+            margin-top: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Mini Cards */
         .mini-card {
-            background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-panel) 100%);
-            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
             padding: 14px;
-            position: relative;
-            transition: all 0.2s ease;
-            border-radius: 4px;
+            transition: all 0.2s;
+            cursor: pointer;
         }
 
         .mini-card:hover {
-            border-color: var(--amber-primary);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 20px rgba(255, 179, 71, 0.15);
+            border-color: var(--blue-dim);
+            background: var(--bg-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
 
-        .symbol-tag {
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: linear-gradient(135deg, var(--amber-primary) 0%, var(--amber-glow) 100%);
-            color: var(--bg-dark);
-            padding: 4px 10px;
+        .mini-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .mini-title {
+            color: var(--blue-primary);
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .mini-subtitle {
+            color: var(--text-muted);
             font-size: 10px;
-            font-weight: 700;
-            border-radius: 0 0 6px 0;
-            box-shadow: 0 2px 10px rgba(255, 179, 71, 0.3);
+            margin-top: 2px;
         }
 
-        /* Square Heatmap */
+        .mini-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Heatmap */
         .heatmap-grid {
             display: grid;
             grid-template-columns: repeat(11, 1fr);
@@ -349,78 +452,105 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
+            font-size: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
             border-radius: 4px;
             border: 1px solid transparent;
+            background: var(--bg-tertiary);
         }
 
         .heatmap-cell:hover {
             z-index: 10;
-            transform: scale(1.15);
-            box-shadow: 0 0 25px rgba(0,0,0,0.8);
-            border-color: var(--amber-primary);
+            transform: scale(1.1);
+            border-color: var(--blue-primary);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
         .heatmap-label {
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
-            z-index: 2;
-            font-size: 10px;
-            letter-spacing: 0.5px;
+            font-size: 9px;
         }
 
         .heatmap-change {
             font-size: 9px;
-            z-index: 2;
+            margin-top: 2px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Chart Container */
+        .chart-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* News Item */
+        .news-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .news-item:hover {
+            background: var(--bg-hover);
+        }
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        .news-time {
+            color: var(--blue-primary);
+            font-size: 10px;
             font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
         }
-
-        .heatmap-weight {
-            position: absolute;
-            bottom: 3px;
-            font-size: 8px;
-            opacity: 0.8;
-        }
-
-        /* Colors */
-        .up { color: var(--accent-green); }
-        .down { color: var(--accent-red); }
-        .amber { color: var(--amber-primary); }
-        .blue { color: var(--accent-blue); }
-        .cyan { color: var(--accent-cyan); }
-        .muted { color: var(--text-muted); }
-
-        /* Triangles */
-        .triangle-up::before {
-            content: "▲";
-            margin-right: 4px;
-            color: var(--accent-green);
-            font-size: 10px;
-        }
-        .triangle-down::before {
-            content: "▼";
-            margin-right: 4px;
-            color: var(--accent-red);
+        .news-source {
+            color: var(--text-muted);
             font-size: 10px;
         }
 
-        /* Flash Animation */
-        @keyframes flashUp {
-            0% { background: rgba(74, 222, 128, 0.4); }
-            100% { background: transparent; }
+        /* Input */
+        .terminal-input {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            color: var(--text-primary);
+            padding: 8px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            outline: none;
+            width: 200px;
+            border-radius: 6px;
+            transition: all 0.2s;
         }
-        @keyframes flashDown {
-            0% { background: rgba(248, 113, 113, 0.4); }
-            100% { background: transparent; }
+        .terminal-input:focus {
+            border-color: var(--blue-primary);
+            box-shadow: 0 0 0 3px var(--blue-glow);
         }
-        .flash-up { animation: flashUp 0.6s ease-out; }
-        .flash-down { animation: flashDown 0.6s ease-out; }
 
-        /* Status Indicators */
+        .search-btn {
+            background: var(--blue-primary);
+            color: var(--bg-primary);
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .search-btn:hover {
+            background: var(--blue-bright);
+            box-shadow: 0 0 15px var(--blue-glow);
+        }
+
+        /* Status */
         .status-dot {
             width: 8px;
             height: 8px;
@@ -429,8 +559,8 @@
             margin-right: 6px;
         }
         .status-live { 
-            background: var(--accent-green); 
-            box-shadow: 0 0 10px var(--accent-green);
+            background: var(--green-up); 
+            box-shadow: 0 0 8px var(--green-up);
             animation: pulse 2s infinite;
         }
 
@@ -439,201 +569,15 @@
             50% { opacity: 0.6; }
         }
 
-        /* Input */
-        .terminal-input {
-            background: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            color: var(--amber-primary);
-            padding: 6px 12px;
-            font-family: inherit;
-            font-size: 13px;
-            outline: none;
-            width: 180px;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-        .terminal-input:focus {
-            border-color: var(--amber-primary);
-            box-shadow: 0 0 15px rgba(255, 179, 71, 0.3);
-        }
-
-        /* Chart Container */
-        .chart-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            height: 160px;
-            position: relative;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        /* News Item */
-        .news-item {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: all 0.15s;
-            border-left: 3px solid transparent;
-        }
-        .news-item:hover {
-            background: rgba(255, 179, 71, 0.06);
-            border-left-color: var(--amber-primary);
-            padding-left: 14px;
-        }
-        .news-time {
-            color: var(--amber-primary);
-            font-size: 10px;
-            font-weight: 700;
-        }
-        .news-source {
-            color: var(--text-muted);
-            font-size: 10px;
-        }
-
-        /* ETF Card Enhanced */
-        .etf-card {
-            background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-panel) 100%);
-            border-left: 4px solid var(--amber-primary);
-            padding: 12px 14px;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s;
-            border-radius: 0 4px 4px 0;
-        }
-        .etf-card:hover {
-            background: linear-gradient(145deg, rgba(255,179,71,0.1) 0%, var(--bg-panel) 100%);
-            border-left-width: 6px;
-            transform: translateX(3px);
-        }
-
-        /* Stats Grid */
-        .stat-box {
-            background: linear-gradient(145deg, var(--bg-panel) 0%, var(--bg-card) 100%);
-            border: 1px solid var(--border-color);
-            padding: 14px;
-            text-align: center;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-        .stat-box:hover {
-            border-color: var(--amber-dim);
-            box-shadow: 0 0 15px rgba(255, 179, 71, 0.1);
-        }
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 10px;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-            letter-spacing: 0.8px;
-        }
-        .stat-value {
-            font-size: 22px;
-            font-weight: 700;
-        }
-
-        /* Yield Curve */
-        .yield-curve-container {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            height: 140px;
-            padding: 12px;
-            gap: 6px;
-        }
-
-        .yield-bar {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            min-width: 40px;
-        }
-
-        .yield-fill {
-            width: 100%;
-            background: linear-gradient(180deg, var(--amber-primary) 0%, var(--amber-dim) 100%);
-            border-radius: 3px 3px 0 0;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .yield-fill:hover {
-            background: linear-gradient(180deg, var(--amber-bright) 0%, var(--amber-primary) 100%);
-            box-shadow: 0 0 20px rgba(255, 179, 71, 0.4);
-        }
-
-        .yield-value {
-            color: var(--amber-primary);
-            font-weight: 700;
-            font-size: 10px;
-            margin-bottom: 6px;
-        }
-
-        .yield-label {
-            color: var(--text-secondary);
-            font-size: 9px;
-            margin-top: 6px;
-        }
-
-        /* ETF Family Cards */
-        .etf-family-card {
-            background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-panel) 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            overflow: hidden;
-            transition: all 0.2s;
-        }
-
-        .etf-family-card:hover {
-            border-color: var(--amber-dim);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-
-        .etf-family-header {
-            background: linear-gradient(90deg, rgba(255,179,71,0.15) 0%, transparent 100%);
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border-color);
-            font-weight: 700;
-            color: var(--amber-primary);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-
-        .etf-family-list {
-            padding: 8px;
-        }
-
-        .etf-mini-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 11px;
-            transition: all 0.15s;
-        }
-
-        .etf-mini-row:hover {
-            background: rgba(255,179,71,0.08);
-            border-radius: 3px;
-        }
-
-        .etf-mini-row:last-child {
-            border-bottom: none;
-        }
-
-        /* Ticker Detail Page */
+        /* Ticker Detail Overlay - Enhanced Layout */
         .ticker-detail-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.9);
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             display: none;
             overflow: auto;
@@ -649,134 +593,376 @@
             to { opacity: 1; }
         }
 
-        .ticker-detail-container {
+        .detail-container {
             max-width: 1400px;
-            margin: 20px auto;
-            padding: 20px;
+            margin: 0 auto;
+            padding: 24px;
         }
 
-        .detail-header {
-            background: linear-gradient(90deg, rgba(255,179,71,0.15) 0%, transparent 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 20px;
-            margin-bottom: 20px;
+        .detail-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
         .detail-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--amber-primary);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            color: var(--text-secondary);
             padding: 10px 20px;
             cursor: pointer;
-            border-radius: 4px;
-            font-weight: 700;
+            border-radius: 6px;
+            font-weight: 600;
             transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
         }
 
         .detail-close:hover {
-            background: var(--amber-primary);
-            color: var(--bg-dark);
+            background: var(--red-down);
+            color: white;
+            border-color: var(--red-down);
+        }
+
+        /* Detail Hero Section */
+        .detail-hero {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .detail-hero-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .detail-ticker-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .detail-ticker-badge {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .detail-company-name {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .detail-exchange {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-price-section {
+            text-align: right;
+        }
+
+        .detail-price {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: -1px;
+        }
+
+        .detail-change {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Detail Stats Grid */
+        .detail-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+        }
+
+        .detail-stat-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .detail-stat-label {
+            color: var(--text-muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .detail-stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Detail Main Layout */
+        .detail-main {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+        }
+
+        .detail-chart-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .detail-chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .detail-chart-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .detail-chart-container {
+            height: 420px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Detail Sidebar */
+        .detail-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .detail-info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .detail-info-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .detail-metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .detail-metric-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-metric-label {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .detail-metric-value {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* News & Holdings Grid */
+        .detail-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        /* ETF Family Cards */
+        .etf-family-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .etf-family-header {
+            background: var(--bg-secondary);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .etf-family-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .etf-family-theme {
+            color: var(--text-muted);
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        .etf-family-list {
+            padding: 8px;
+        }
+
+        .etf-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+
+        .etf-row:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Yield Curve */
+        .yield-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 160px;
+            padding: 16px;
+            gap: 8px;
+        }
+
+        .yield-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .yield-fill {
+            width: 100%;
+            background: linear-gradient(180deg, var(--blue-primary) 0%, var(--blue-dark) 100%);
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+            min-height: 20px;
+        }
+
+        .yield-fill:hover {
+            background: linear-gradient(180deg, var(--blue-bright) 0%, var(--blue-primary) 100%);
+            box-shadow: 0 0 20px var(--blue-glow);
+        }
+
+        .yield-label {
+            color: var(--text-muted);
+            font-size: 9px;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+
+        .yield-value {
+            color: var(--blue-primary);
+            font-weight: 600;
+            font-size: 10px;
+            margin-bottom: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue-primary), var(--blue-bright));
+            border-radius: 3px;
+            transition: width 0.3s;
         }
 
         /* Helpers */
         .right { text-align: right; }
         .center { text-align: center; }
-        .bold { font-weight: 700; }
         .flex { display: flex; }
         .items-center { align-items: center; }
         .justify-between { justify-content: space-between; }
-        .gap-1 { gap: 6px; }
         .gap-2 { gap: 12px; }
-        .p-2 { padding: 12px; }
-        .px-2 { padding-left: 12px; padding-right: 12px; }
-        .py-1 { padding-top: 6px; padding-bottom: 6px; }
-        .mb-2 { margin-bottom: 12px; }
-        .mt-2 { margin-top: 12px; }
+        .mb-2 { margin-bottom: 16px; }
+        .mt-2 { margin-top: 16px; }
         .overflow-auto { overflow: auto; }
-        .hidden { display: none; }
-        .w-full { width: 100%; }
-        .h-full { height: 100%; }
 
-        /* Progress bars */
-        .progress-bar {
-            height: 6px;
-            background: var(--bg-panel);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 6px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--amber-primary) 0%, var(--amber-bright) 100%);
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-
-        /* Fear gauge */
+        /* Fear Gauge */
         .fear-gauge {
-            height: 10px;
-            background: linear-gradient(90deg, var(--accent-green) 0%, var(--amber-primary) 50%, var(--accent-red) 100%);
-            border-radius: 5px;
+            height: 8px;
+            background: linear-gradient(90deg, var(--green-up) 0%, var(--blue-primary) 50%, var(--red-down) 100%);
+            border-radius: 4px;
             position: relative;
-            margin: 10px 0;
+            margin: 12px 0;
         }
 
         .fear-indicator {
             position: absolute;
-            top: -5px;
-            width: 6px;
-            height: 20px;
-            background: var(--text-primary);
-            border-radius: 3px;
-            box-shadow: 0 0 10px rgba(255,255,255,0.5);
-            transition: left 0.3s ease;
-        }
-
-        /* Big Number Display */
-        .big-number {
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--amber-primary);
-            text-shadow: 0 0 20px rgba(255, 179, 71, 0.3);
+            top: -4px;
+            width: 4px;
+            height: 16px;
+            background: white;
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+            transition: left 0.3s;
         }
 
         /* Section Title */
         .section-title {
-            color: var(--amber-primary);
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 11px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        /* Metric Row */
-        .metric-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .metric-row:last-child {
-            border-bottom: none;
-        }
-
-        .metric-label {
+            letter-spacing: 0.8px;
             color: var(--text-muted);
-            font-size: 12px;
-        }
-
-        .metric-value {
-            font-weight: 700;
-            font-size: 12px;
+            margin-bottom: 12px;
+            font-family: 'Inter', sans-serif;
         }
     </style>
 <base target="_blank">
@@ -786,51 +972,51 @@
 <div class="terminal-grid">
     <!-- Header -->
     <div class="cell header-bar">
-        <div class="flex items-center gap-4">
-            <span class="logo">◆ TERMINAL PRO</span>
-            <span class="text-sm muted">|</span>
-            <span class="text-sm text-secondary">MARKET DATA v3.0</span>
+        <div class="logo">
+            <div class="logo-icon">FZ</div>
+            <span class="logo-text">FinZee</span>
+            <span class="logo-sub">Professional Terminal</span>
         </div>
         <div class="flex items-center gap-3">
-            <input type="text" class="terminal-input" placeholder="SEARCH TICKER..." id="searchInput" onkeypress="if(event.key==='Enter') searchTicker(this.value)">
-            <button onclick="searchTicker(document.getElementById('searchInput').value)" style="background: var(--amber-primary); color: var(--bg-dark); border: none; padding: 6px 16px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 12px;">GO</button>
-            <span class="muted">|</span>
-            <span id="clock" class="amber bold text-sm">--:--:--</span>
-            <span class="muted text-sm">ET</span>
+            <input type="text" class="terminal-input" placeholder="Enter ticker symbol..." id="searchInput" onkeypress="if(event.key==='Enter') searchTicker(this.value)">
+            <button class="search-btn" onclick="searchTicker(document.getElementById('searchInput').value)">Search</button>
+            <span style="color: var(--border-default);">|</span>
+            <span id="clock" style="color: var(--blue-primary); font-weight: 600; font-family: 'JetBrains Mono', monospace;">--:--:--</span>
+            <span style="color: var(--text-muted); font-size: 11px;">ET</span>
             <span class="status-dot status-live"></span>
-            <span class="up text-sm bold">LIVE</span>
+            <span class="change-up" style="font-size: 11px; font-weight: 600;">LIVE</span>
         </div>
     </div>
 
-    <!-- Rolling Ticker -->
+    <!-- Ticker -->
     <div class="cell ticker-wrap">
         <div class="ticker-content" id="tickerTape">
-            <span class="loading">Loading market data...</span>
+            <span style="color: var(--text-muted); padding: 0 20px;">Loading market data...</span>
         </div>
     </div>
 
-    <!-- Navigation Tape - Full Width -->
+    <!-- Navigation -->
     <div class="cell nav-tape">
         <div class="nav-item active" onclick="switchView('outlook')">
-            <span>◆</span> MARKET OUTLOOK
+            <span>◆</span> Market Outlook
         </div>
         <div class="nav-item" onclick="switchView('sectors')">
-            <span>◆</span> SECTORS
+            <span>◆</span> Sectors
         </div>
         <div class="nav-item" onclick="switchView('assets')">
-            <span>◆</span> ASSETS
+            <span>◆</span> Assets
         </div>
         <div class="nav-item" onclick="switchView('stocks')">
-            <span>◆</span> STOCKS
+            <span>◆</span> Stocks
         </div>
         <div class="nav-item" onclick="switchView('bonds')">
-            <span>◆</span> BONDS & FX
+            <span>◆</span> Bonds & FX
         </div>
         <div class="nav-item" onclick="switchView('crypto')">
-            <span>◆</span> CRYPTO
+            <span>◆</span> Crypto
         </div>
         <div class="nav-item" onclick="switchView('etfs')">
-            <span>◆</span> ETF CENTER
+            <span>◆</span> ETF Center
         </div>
     </div>
 
@@ -840,294 +1026,162 @@
         <!-- MARKET OUTLOOK -->
         <div id="view-outlook" class="view-section active">
             
-            <!-- Top Row: Major Indices with Enhanced Data -->
-            <div class="grid-4 mb-3">
+            <!-- Indices -->
+            <div class="grid-4 mb-2">
                 <div class="card">
-                    <div class="card-header">
-                        <span>S&P 500 (SPY)</span>
-                        <span class="rec-badge rec-buy">BULLISH</span>
-                    </div>
+                    <div class="card-header">S&P 500 (SPY)</div>
                     <div class="card-body" id="spyCard"></div>
                 </div>
                 <div class="card">
-                    <div class="card-header">
-                        <span>NASDAQ 100 (QQQ)</span>
-                        <span class="rec-badge rec-buy">BULLISH</span>
-                    </div>
+                    <div class="card-header">NASDAQ 100 (QQQ)</div>
                     <div class="card-body" id="qqqCard"></div>
                 </div>
                 <div class="card">
-                    <div class="card-header">
-                        <span>RUSSELL 2000 (IWM)</span>
-                        <span class="rec-badge rec-hold">NEUTRAL</span>
-                    </div>
+                    <div class="card-header">RUSSELL 2000 (IWM)</div>
                     <div class="card-body" id="iwmCard"></div>
                 </div>
                 <div class="card">
-                    <div class="card-header">
-                        <span>DOW JONES (DIA)</span>
-                        <span class="rec-badge rec-hold">NEUTRAL</span>
-                    </div>
+                    <div class="card-header">DOW JONES (DIA)</div>
                     <div class="card-body" id="diaCard"></div>
                 </div>
             </div>
 
-            <!-- Second Row: Fear Gauge + Market Breadth + Economic Calendar -->
-            <div class="grid-3 mb-3">
+            <!-- Fear & Breadth -->
+            <div class="grid-3 mb-2">
                 <div class="card">
-                    <div class="card-header">FEAR & VOLATILITY INDEX</div>
+                    <div class="card-header">Fear & Volatility</div>
                     <div class="card-body">
-                        <div class="mb-4 p-4 border-b" style="border-color: var(--border-color);">
-                            <div class="flex justify-between items-center mb-3">
-                                <div>
-                                    <div class="bold text-lg">VIX INDEX</div>
-                                    <div class="text-xs muted">CBOE VOLATILITY INDEX</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-2xl up triangle-up bold">19.74</div>
-                                    <div class="up bold">+10.09%</div>
-                                </div>
+                        <div class="flex justify-between items-center mb-3">
+                            <div>
+                                <div class="text-sm font-semibold">VIX Index</div>
+                                <div class="text-xs" style="color: var(--text-muted);">CBOE Volatility</div>
                             </div>
-                            <div class="fear-gauge">
-                                <div class="fear-indicator" style="left: 35%;"></div>
+                            <div class="text-right">
+                                <div class="text-2xl change-up font-bold">19.74</div>
+                                <div class="change-up text-sm">+10.09%</div>
                             </div>
-                            <div class="flex justify-between text-xs mt-2 muted">
-                                <span>10 Extreme Fear</span>
-                                <span>50 Extreme Greed</span>
-                            </div>
+                        </div>
+                        <div class="fear-gauge">
+                            <div class="fear-indicator" style="left: 35%;"></div>
+                        </div>
+                        <div class="flex justify-between text-xs mt-2" style="color: var(--text-muted);">
+                            <span>10 Fear</span>
+                            <span>50 Greed</span>
                         </div>
                         
-                        <div class="section-title">Volatility Term Structure</div>
-                        <div class="metric-row">
-                            <span class="metric-label">VIX9D (9-day)</span>
-                            <span class="metric-value up">18.45 (+8.2%)</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">VIX3M (3-month)</span>
-                            <span class="metric-value up">21.23 (+5.1%)</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">VIX6M (6-month)</span>
-                            <span class="metric-value up">23.12 (+3.8%)</span>
-                        </div>
-                        
-                        <div class="mt-4 pt-4 border-t" style="border-color: var(--border-color);">
-                            <div class="flex justify-between items-center mb-2">
-                                <div>
-                                    <div class="bold">DXY INDEX</div>
-                                    <div class="text-xs muted">US DOLLAR INDEX</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-xl down triangle-down bold">97.74</div>
-                                    <div class="down bold">-0.06%</div>
-                                </div>
+                        <div class="mt-4 pt-4" style="border-top: 1px solid var(--border-subtle);">
+                            <div class="section-title">Term Structure</div>
+                            <div class="detail-metric-row">
+                                <span class="detail-metric-label">VIX9D</span>
+                                <span class="detail-metric-value change-up">18.45</span>
+                            </div>
+                            <div class="detail-metric-row">
+                                <span class="detail-metric-label">VIX3M</span>
+                                <span class="detail-metric-value change-up">21.23</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-header">MARKET BREADTH & SENTIMENT</div>
+                    <div class="card-header">Market Breadth</div>
                     <div class="card-body">
                         <div class="grid-2 gap-3 mb-4">
-                            <div class="stat-box" style="border-left: 4px solid var(--accent-green);">
-                                <div class="stat-value up">2,847</div>
-                                <div class="stat-label">ADVANCING</div>
+                            <div class="metric-card" style="border-left: 3px solid var(--green-up);">
+                                <div class="metric-label">Advancing</div>
+                                <div class="metric-value change-up">2,847</div>
                             </div>
-                            <div class="stat-box" style="border-left: 4px solid var(--accent-red);">
-                                <div class="stat-value down">4,203</div>
-                                <div class="stat-label">DECLINING</div>
+                            <div class="metric-card" style="border-left: 3px solid var(--red-down);">
+                                <div class="metric-label">Declining</div>
+                                <div class="metric-value change-down">4,203</div>
                             </div>
                         </div>
                         
-                        <div class="section-title">Advance/Decline Ratios</div>
-                        <div class="metric-row">
-                            <span class="metric-label">NYSE</span>
-                            <span class="metric-value down bold">0.68</span>
+                        <div class="section-title">A/D Ratios</div>
+                        <div class="detail-metric-row">
+                            <span class="detail-metric-label">NYSE</span>
+                            <span class="detail-metric-value change-down">0.68</span>
                         </div>
-                        <div class="metric-row">
-                            <span class="metric-label">NASDAQ</span>
-                            <span class="metric-value down bold">0.71</span>
+                        <div class="detail-metric-row">
+                            <span class="detail-metric-label">NASDAQ</span>
+                            <span class="detail-metric-value change-down">0.71</span>
                         </div>
-                        <div class="metric-row">
-                            <span class="metric-label">AMEX</span>
-                            <span class="metric-value up bold">1.12</span>
-                        </div>
-                        
-                        <div class="mt-4 pt-4 border-t" style="border-color: var(--border-color);">
-                            <div class="section-title">Market Statistics</div>
-                            <div class="metric-row">
-                                <span class="metric-label">New 52W Highs</span>
-                                <span class="metric-value up">45</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">New 52W Lows</span>
-                                <span class="metric-value down">128</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">Up Volume</span>
-                                <span class="metric-value muted">42%</span>
-                            </div>
+                        <div class="detail-metric-row">
+                            <span class="detail-metric-label">AMEX</span>
+                            <span class="detail-metric-value change-up">1.12</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-header">ECONOMIC CALENDAR</div>
-                    <div class="card-body" style="max-height: 320px; overflow: auto;">
+                    <div class="card-header">Economic Calendar</div>
+                    <div class="card-body" style="max-height: 280px; overflow: auto;">
                         <div class="news-item">
                             <div class="flex justify-between mb-1">
-                                <span class="news-time">TODAY 08:30 ET</span>
-                                <span class="rec-badge rec-buy">HIGH IMPACT</span>
+                                <span class="news-time">08:30 ET</span>
+                                <span class="rec-badge rec-buy">High</span>
                             </div>
-                            <div class="font-bold mb-1">Non-Farm Payrolls</div>
-                            <div class="text-xs muted">Expected: 185K | Previous: 143K</div>
+                            <div class="font-semibold text-sm">Non-Farm Payrolls</div>
+                            <div class="text-xs mt-1" style="color: var(--text-muted);">Exp: 185K | Prev: 143K</div>
                         </div>
                         <div class="news-item">
                             <div class="flex justify-between mb-1">
-                                <span class="news-time">TODAY 08:30 ET</span>
-                                <span class="rec-badge rec-buy">HIGH IMPACT</span>
+                                <span class="news-time">08:30 ET</span>
+                                <span class="rec-badge rec-buy">High</span>
                             </div>
-                            <div class="font-bold mb-1">Unemployment Rate</div>
-                            <div class="text-xs muted">Expected: 4.1% | Previous: 4.0%</div>
+                            <div class="font-semibold text-sm">Unemployment Rate</div>
+                            <div class="text-xs mt-1" style="color: var(--text-muted);">Exp: 4.1% | Prev: 4.0%</div>
                         </div>
                         <div class="news-item">
                             <div class="flex justify-between mb-1">
-                                <span class="news-time">TODAY 10:00 ET</span>
-                                <span class="rec-badge rec-hold">MEDIUM</span>
+                                <span class="news-time">10:00 ET</span>
+                                <span class="rec-badge rec-hold">Medium</span>
                             </div>
-                            <div class="font-bold mb-1">ISM Services PMI</div>
-                            <div class="text-xs muted">Expected: 52.5 | Previous: 52.8</div>
-                        </div>
-                        <div class="news-item">
-                            <div class="flex justify-between mb-1">
-                                <span class="news-time">MON 10:00 ET</span>
-                                <span class="rec-badge rec-hold">MEDIUM</span>
-                            </div>
-                            <div class="font-bold mb-1">Factory Orders</div>
-                            <div class="text-xs muted">Expected: +1.2% | Previous: -0.6%</div>
-                        </div>
-                        <div class="news-item">
-                            <div class="flex justify-between mb-1">
-                                <span class="news-time">TUE 08:30 ET</span>
-                                <span class="rec-badge rec-sell">HIGH IMPACT</span>
-                            </div>
-                            <div class="font-bold mb-1">CPI YoY</div>
-                            <div class="text-xs muted">Expected: 2.9% | Previous: 3.1%</div>
+                            <div class="font-semibold text-sm">ISM Services PMI</div>
+                            <div class="text-xs mt-1" style="color: var(--text-muted);">Exp: 52.5 | Prev: 52.8</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Third Row: Charts -->
-            <div class="grid-3 mb-3">
+            <!-- Charts -->
+            <div class="grid-3 mb-2">
                 <div class="card">
-                    <div class="card-header">
-                        <span>SPY CHART - 1D</span>
-                        <span class="text-xs muted">S&P 500 ETF</span>
-                    </div>
+                    <div class="card-header">SPY Chart</div>
                     <div class="card-body">
                         <div class="chart-box" id="chartSPY"></div>
-                        <div class="grid-4 gap-2 mt-3 text-xs center">
-                            <div class="metric-row">
-                                <span class="metric-label">Open</span>
-                                <span class="metric-value">595.20</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">High</span>
-                                <span class="metric-value up">597.45</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">Low</span>
-                                <span class="metric-value down">590.12</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">Volume</span>
-                                <span class="metric-value">45.2M</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header">
-                        <span>QQQ CHART - 1D</span>
-                        <span class="text-xs muted">NASDAQ 100 ETF</span>
-                    </div>
+                    <div class="card-header">QQQ Chart</div>
                     <div class="card-body">
                         <div class="chart-box" id="chartQQQ"></div>
-                        <div class="grid-4 gap-2 mt-3 text-xs center">
-                            <div class="metric-row">
-                                <span class="metric-label">Open</span>
-                                <span class="metric-value">512.30</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">High</span>
-                                <span class="metric-value up">515.80</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">Low</span>
-                                <span class="metric-value down">508.45</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">Volume</span>
-                                <span class="metric-value">32.8M</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header">
-                        <span>DIA CHART - 1D</span>
-                        <span class="text-xs muted">DOW JONES ETF</span>
-                    </div>
+                    <div class="card-header">DIA Chart</div>
                     <div class="card-body">
                         <div class="chart-box" id="chartDIA"></div>
-                        <div class="grid-4 gap-2 mt-3 text-xs center">
-                            <div class="metric-row">
-                                <span class="metric-label">Open</span>
-                                <span class="metric-value">438.50</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">High</span>
-                                <span class="metric-value up">440.20</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">Low</span>
-                                <span class="metric-value down">432.15</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">Volume</span>
-                                <span class="metric-value">3.2M</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Fourth Row: Detailed Indices Table -->
-            <div class="card mb-3">
-                <div class="card-header">INDICES & ASSETS DETAIL - REAL TIME DATA</div>
-                <div class="card-body overflow-auto" style="max-height: 280px;">
-                    <table class="data-table compact-row">
+            <!-- Detailed Table -->
+            <div class="card mb-2">
+                <div class="card-header">Market Detail</div>
+                <div class="card-body overflow-auto" style="max-height: 300px;">
+                    <table class="data-table">
                         <thead>
                             <tr>
-                                <th>SYMBOL</th>
-                                <th>NAME</th>
-                                <th>REC</th>
-                                <th>LAST</th>
-                                <th>CHG</th>
-                                <th>%CHG</th>
-                                <th>OPEN</th>
-                                <th>HIGH</th>
-                                <th>LOW</th>
-                                <th>CLOSE</th>
-                                <th>VOLUME</th>
-                                <th>AVG VOL</th>
-                                <th>52W HIGH</th>
-                                <th>52W LOW</th>
-                                <th>P/E</th>
-                                <th>BETA</th>
-                                <th>AUM</th>
+                                <th>Symbol</th>
+                                <th>Name</th>
+                                <th>Signal</th>
+                                <th class="right">Price</th>
+                                <th class="right">Change</th>
+                                <th class="right">%Chg</th>
+                                <th class="right">Volume</th>
+                                <th class="right">P/E</th>
+                                <th class="right">Beta</th>
                             </tr>
                         </thead>
                         <tbody id="indicesDetailTable"></tbody>
@@ -1135,101 +1189,36 @@
                 </div>
             </div>
 
-            <!-- Bottom Row: News & Insider Activity -->
-            <div class="grid-2">
-                <div class="card">
-                    <div class="card-header">BREAKING NEWS - MARKET MOVERS</div>
-                    <div class="card-body overflow-auto" style="max-height: 250px;" id="newsFeedOutlook"></div>
-                </div>
-                <div class="card">
-                    <div class="card-header">LATEST INSIDER ACTIVITY</div>
-                    <div class="card-body overflow-auto" style="max-height: 250px;">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>COMPANY</th>
-                                    <th>INSIDER</th>
-                                    <th>TYPE</th>
-                                    <th>SHARES</th>
-                                    <th>PRICE</th>
-                                    <th>VALUE</th>
-                                    <th>DATE</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span class="ticker-badge">NVDA</span></td>
-                                    <td>Jensen Huang</td>
-                                    <td class="down">SELL</td>
-                                    <td class="right">150,000</td>
-                                    <td class="right">875.50</td>
-                                    <td class="right down">$131.3M</td>
-                                    <td class="muted">Feb 27</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="ticker-badge">TSLA</span></td>
-                                    <td>Elon Musk</td>
-                                    <td class="down">SELL</td>
-                                    <td class="right">500,000</td>
-                                    <td class="right">202.45</td>
-                                    <td class="right down">$101.2M</td>
-                                    <td class="muted">Feb 26</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="ticker-badge">AAPL</span></td>
-                                    <td>Tim Cook</td>
-                                    <td class="up">BUY</td>
-                                    <td class="right">10,000</td>
-                                    <td class="right">185.20</td>
-                                    <td class="right up">$1.9M</td>
-                                    <td class="muted">Feb 25</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="ticker-badge">MSFT</span></td>
-                                    <td>Satya Nadella</td>
-                                    <td class="up">BUY</td>
-                                    <td class="right">25,000</td>
-                                    <td class="right">412.30</td>
-                                    <td class="right up">$10.3M</td>
-                                    <td class="muted">Feb 24</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <!-- News -->
+            <div class="card">
+                <div class="card-header">Market News</div>
+                <div class="card-body overflow-auto" style="max-height: 200px;" id="newsFeedOutlook"></div>
             </div>
         </div>
 
         <!-- SECTORS -->
         <div id="view-sectors" class="view-section">
-            <div class="card mb-3">
-                <div class="card-header">S&P 500 SECTOR HEATMAP - MARKET CAP WEIGHTED</div>
+            <div class="card mb-2">
+                <div class="card-header">Sector Heatmap</div>
                 <div class="card-body">
                     <div id="sectorHeatmap" class="heatmap-grid"></div>
-                    <div class="flex justify-between text-xs muted mt-3">
-                        <span>← HOVER FOR DETAILS | SQUARE = SECTOR | COLOR = PERFORMANCE →</span>
-                        <span>RED: NEGATIVE | GREEN: POSITIVE | AMBER: NEUTRAL</span>
-                    </div>
                 </div>
             </div>
 
-            <div class="grid-2 mb-3">
+            <div class="grid-2 mb-2">
                 <div class="card">
-                    <div class="card-header">SECTOR PERFORMANCE DETAIL</div>
+                    <div class="card-header">Sector Performance</div>
                     <div class="card-body overflow-auto" style="max-height: 400px;">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>SECTOR</th>
-                                    <th>TICKER</th>
-                                    <th>REC</th>
-                                    <th>PRICE</th>
-                                    <th>CHG</th>
-                                    <th>%CHG</th>
-                                    <th>VOLUME</th>
-                                    <th>P/E</th>
-                                    <th>BETA</th>
-                                    <th>YTD%</th>
+                                    <th>Sector</th>
+                                    <th>Ticker</th>
+                                    <th>Signal</th>
+                                    <th class="right">Price</th>
+                                    <th class="right">%Chg</th>
+                                    <th class="right">YTD%</th>
+                                    <th class="right">P/E</th>
                                 </tr>
                             </thead>
                             <tbody id="sectorTableBody"></tbody>
@@ -1237,18 +1226,16 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header">SECTOR FUNDAMENTALS</div>
+                    <div class="card-header">Sector Fundamentals</div>
                     <div class="card-body overflow-auto" style="max-height: 400px;">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>SECTOR</th>
-                                    <th>MARKET CAP</th>
-                                    <th>WEIGHT</th>
-                                    <th>EPS GROWTH</th>
-                                    <th>REV GROWTH</th>
-                                    <th>DIV YIELD</th>
-                                    <th>RSI(14)</th>
+                                    <th>Sector</th>
+                                    <th class="right">Market Cap</th>
+                                    <th class="right">Weight</th>
+                                    <th class="right">EPS Gr</th>
+                                    <th class="right">Div Yield</th>
                                 </tr>
                             </thead>
                             <tbody id="sectorFundamentalsTable"></tbody>
@@ -1256,60 +1243,31 @@
                     </div>
                 </div>
             </div>
-
-            <div class="card">
-                <div class="card-header">SECTOR ROTATION ANALYSIS</div>
-                <div class="card-body">
-                    <div class="grid-4 gap-3">
-                        <div class="stat-box">
-                            <div class="stat-label">MOMENTUM LEADER</div>
-                            <div class="big-number" style="font-size: 24px;">XLK</div>
-                            <div class="up bold">+2.45% MTD</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">VALUE LEADER</div>
-                            <div class="big-number" style="font-size: 24px;">XLF</div>
-                            <div class="up bold">+1.82% MTD</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">DIVIDEND LEADER</div>
-                            <div class="big-number" style="font-size: 24px;">XLU</div>
-                            <div class="up bold">3.45% YIELD</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">VOLATILITY</div>
-                            <div class="big-number" style="font-size: 24px;">XLE</div>
-                            <div class="down bold">±2.8% Daily</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- ASSETS -->
         <div id="view-assets" class="view-section">
-            <div class="card mb-3">
-                <div class="card-header">TOP 20 ETFS BY ASSETS - COMPREHENSIVE DATA</div>
+            <div class="card mb-2">
+                <div class="card-header">Top ETFs</div>
                 <div class="card-body">
                     <div class="grid-5" id="etfCardsGrid"></div>
                 </div>
             </div>
 
-            <div class="grid-2 mb-3">
+            <div class="grid-2">
                 <div class="card">
-                    <div class="card-header">ETF FUNDAMENTALS & FLOW DATA</div>
+                    <div class="card-header">ETF Fundamentals</div>
                     <div class="card-body overflow-auto" style="max-height: 400px;">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>TICKER</th>
-                                    <th>NAME</th>
-                                    <th>REC</th>
-                                    <th>PRICE</th>
-                                    <th>CHG%</th>
-                                    <th>AUM</th>
-                                    <th>EXPENSE</th>
-                                    <th>FLOW(1M)</th>
+                                    <th>Ticker</th>
+                                    <th>Name</th>
+                                    <th>Signal</th>
+                                    <th class="right">Price</th>
+                                    <th class="right">%Chg</th>
+                                    <th class="right">AUM</th>
+                                    <th class="right">Expense</th>
                                 </tr>
                             </thead>
                             <tbody id="etfFlowTable"></tbody>
@@ -1317,19 +1275,17 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header">ETF PERFORMANCE MATRIX</div>
+                    <div class="card-header">Performance Matrix</div>
                     <div class="card-body overflow-auto" style="max-height: 400px;">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>TICKER</th>
-                                    <th>1D</th>
-                                    <th>1W</th>
-                                    <th>1M</th>
-                                    <th>3M</th>
-                                    <th>YTD</th>
-                                    <th>1Y</th>
-                                    <th>3Y</th>
+                                    <th>Ticker</th>
+                                    <th class="right">1D</th>
+                                    <th class="right">1W</th>
+                                    <th class="right">1M</th>
+                                    <th class="right">YTD</th>
+                                    <th class="right">1Y</th>
                                 </tr>
                             </thead>
                             <tbody id="etfPerformanceTable"></tbody>
@@ -1337,448 +1293,172 @@
                     </div>
                 </div>
             </div>
-
-            <div class="card">
-                <div class="card-header">ETF ASSET ALLOCATION RECOMMENDATION</div>
-                <div class="card-body">
-                    <div class="grid-5 gap-3">
-                        <div class="stat-box" style="border-top: 4px solid var(--accent-green);">
-                            <div class="stat-label">EQUITY</div>
-                            <div class="big-number" style="font-size: 28px;">60%</div>
-                            <div class="text-xs muted mt-2">Core Holdings</div>
-                        </div>
-                        <div class="stat-box" style="border-top: 4px solid var(--amber-primary);">
-                            <div class="stat-label">FIXED INCOME</div>
-                            <div class="big-number" style="font-size: 28px;">25%</div>
-                            <div class="text-xs muted mt-2">Stability</div>
-                        </div>
-                        <div class="stat-box" style="border-top: 4px solid var(--accent-blue);">
-                            <div class="stat-label">ALTERNATIVES</div>
-                            <div class="big-number" style="font-size: 28px;">10%</div>
-                            <div class="text-xs muted mt-2">Diversification</div>
-                        </div>
-                        <div class="stat-box" style="border-top: 4px solid var(--accent-cyan);">
-                            <div class="stat-label">CASH</div>
-                            <div class="big-number" style="font-size: 28px;">3%</div>
-                            <div class="text-xs muted mt-2">Liquidity</div>
-                        </div>
-                        <div class="stat-box" style="border-top: 4px solid var(--accent-red);">
-                            <div class="stat-label">CRYPTO</div>
-                            <div class="big-number" style="font-size: 28px;">2%</div>
-                            <div class="text-xs muted mt-2">Speculative</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- STOCKS -->
         <div id="view-stocks" class="view-section">
-            <div class="card mb-3">
-                <div class="card-header">INNOVATION THEMES - THEMATIC STOCKS LEADERS</div>
+            <div class="card mb-2">
+                <div class="card-header">Innovation Leaders</div>
                 <div class="card-body overflow-auto" style="max-height: 500px;">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>SYMBOL</th>
-                                <th>NAME</th>
-                                <th>THEME</th>
-                                <th>REC</th>
-                                <th>LAST</th>
-                                <th>CHG</th>
-                                <th>%CHG</th>
-                                <th>MKT CAP</th>
-                                <th>P/E</th>
-                                <th>EPS</th>
-                                <th>BETA</th>
-                                <th>RSI</th>
-                                <th>NEWS</th>
+                                <th>Symbol</th>
+                                <th>Name</th>
+                                <th>Theme</th>
+                                <th>Signal</th>
+                                <th class="right">Price</th>
+                                <th class="right">%Chg</th>
+                                <th class="right">Mkt Cap</th>
+                                <th class="right">P/E</th>
+                                <th class="right">Beta</th>
                             </tr>
                         </thead>
                         <tbody id="stocksTableBody"></tbody>
                     </table>
                 </div>
             </div>
-
-            <div class="grid-2">
-                <div class="card">
-                    <div class="card-header">AI & SEMICONDUCTOR LEADERS</div>
-                    <div class="card-body" id="aiLeaders"></div>
-                </div>
-                <div class="card">
-                    <div class="card-header">FINTECH & BLOCKCHAIN LEADERS</div>
-                    <div class="card-body" id="fintechLeaders"></div>
-                </div>
-            </div>
         </div>
 
-        <!-- BONDS & FX -->
+        <!-- BONDS -->
         <div id="view-bonds" class="view-section">
-            <div class="grid-2 mb-3">
+            <div class="grid-2 mb-2">
                 <div class="card">
-                    <div class="card-header">US TREASURY YIELD CURVE</div>
+                    <div class="card-header">Yield Curve</div>
                     <div class="card-body">
-                        <div class="yield-curve-container" id="yieldCurve"></div>
-                        <div class="grid-4 gap-3 mt-4 text-xs center">
-                            <div class="stat-box">
-                                <div class="muted">3M T-BILL</div>
-                                <div class="amber bold text-lg">4.42%</div>
-                                <div class="text-xs muted">-0.02%</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="muted">2Y NOTE</div>
-                                <div class="amber bold text-lg">4.15%</div>
-                                <div class="text-xs muted">+0.05%</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="muted">10Y BOND</div>
-                                <div class="amber bold text-lg">4.32%</div>
-                                <div class="text-xs muted">+0.08%</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="muted">30Y BOND</div>
-                                <div class="amber bold text-lg">4.58%</div>
-                                <div class="text-xs muted">+0.12%</div>
-                            </div>
-                        </div>
-                        <div class="mt-4 pt-4 border-t" style="border-color: var(--border-color);">
-                            <div class="section-title">Yield Curve Analysis</div>
-                            <div class="metric-row">
-                                <span class="metric-label">2Y-10Y Spread</span>
-                                <span class="metric-value up">+17 bps</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">10Y-30Y Spread</span>
-                                <span class="metric-value up">+26 bps</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">Curve Shape</span>
-                                <span class="metric-value amber">STEEPENING</span>
-                            </div>
-                        </div>
+                        <div class="yield-container" id="yieldCurve"></div>
                     </div>
                 </div>
-
                 <div class="card">
-                    <div class="card-header">FOREX MATRIX - MAJOR PAIRS</div>
+                    <div class="card-header">Forex Matrix</div>
                     <div class="card-body">
                         <div class="grid-3 gap-3" id="forexGrid"></div>
-                        <div class="mt-4 pt-4 border-t" style="border-color: var(--border-color);">
-                            <div class="section-title">Currency Strength Index</div>
-                            <div class="metric-row">
-                                <span class="metric-label">USD (DXY)</span>
-                                <span class="metric-value down">97.74 (-0.06%)</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">EUR (EUR/USD)</span>
-                                <span class="metric-value up">1.0845 (+0.12%)</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">JPY (USD/JPY)</span>
-                                <span class="metric-value up">149.85 (+0.45%)</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">GBP (GBP/USD)</span>
-                                <span class="metric-value down">1.2645 (-0.08%)</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card mb-3">
-                <div class="card-header">GLOBAL RATES & CENTRAL BANK POLICY</div>
+            <div class="card">
+                <div class="card-header">Global Rates</div>
                 <div class="card-body overflow-auto" style="max-height: 350px;">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>COUNTRY</th>
-                                <th>CENTRAL BANK</th>
-                                <th>POLICY RATE</th>
-                                <th>PREV RATE</th>
-                                <th>CHANGE</th>
-                                <th>NEXT MEETING</th>
-                                <th>10Y YIELD</th>
-                                <th>SPREAD</th>
-                                <th>CURRENCY</th>
-                                <th>FX %CHG</th>
+                                <th>Country</th>
+                                <th>Central Bank</th>
+                                <th class="right">Policy Rate</th>
+                                <th class="right">Change</th>
+                                <th>Next Meeting</th>
+                                <th class="right">10Y Yield</th>
                             </tr>
                         </thead>
                         <tbody id="ratesTableBody"></tbody>
                     </table>
                 </div>
             </div>
-
-            <div class="card">
-                <div class="card-header">CREDIT MARKETS & CORPORATE BONDS</div>
-                <div class="card-body">
-                    <div class="grid-4 gap-3">
-                        <div class="stat-box">
-                            <div class="stat-label">IG CREDIT SPREAD</div>
-                            <div class="big-number" style="font-size: 24px;">98 bps</div>
-                            <div class="up bold">-2 bps</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">HY CREDIT SPREAD</div>
-                            <div class="big-number" style="font-size: 24px;">312 bps</div>
-                            <div class="down bold">+8 bps</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">INV GRADE YIELD</div>
-                            <div class="big-number" style="font-size: 24px;">5.28%</div>
-                            <div class="up bold">+0.05%</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">HIGH YIELD YIELD</div>
-                            <div class="big-number" style="font-size: 24px;">7.42%</div>
-                            <div class="up bold">+0.12%</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- CRYPTO -->
         <div id="view-crypto" class="view-section">
-            <div class="grid-3 mb-3">
+            <div class="grid-3 mb-2">
                 <div class="card">
-                    <div class="card-header">TOTAL MARKET CAP</div>
+                    <div class="card-header">Market Cap</div>
                     <div class="card-body center">
-                        <div class="big-number mb-2">$2.34T</div>
-                        <div class="text-sm muted mb-4">GLOBAL CRYPTO MARKET</div>
-                        <div style="width: 100px; height: 100px; margin: 0 auto; border: 5px solid var(--amber-dim); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative;">
-                            <div style="text-align: center;">
-                                <div class="text-sm muted">BTC</div>
-                                <div class="amber bold text-lg">52%</div>
-                            </div>
-                            <div style="position: absolute; inset: -5px; border: 5px solid transparent; border-top-color: var(--amber-primary); border-radius: 50%; transform: rotate(45deg);"></div>
+                        <div class="text-3xl font-bold mb-2" style="color: var(--blue-primary); font-family: 'JetBrains Mono', monospace;">$2.34T</div>
+                        <div class="text-sm mb-4" style="color: var(--text-muted);">Global Crypto Market</div>
+                        <div class="progress-container">
+                            <div class="progress-fill" style="width: 52%;"></div>
                         </div>
                         <div class="flex justify-between mt-4 text-sm">
                             <div>
-                                <div class="up bold">BTC 52%</div>
-                                <div class="blue bold">ETH 10%</div>
-                                <div class="muted">OTHERS 38%</div>
+                                <div class="change-up font-semibold">BTC 52%</div>
+                                <div style="color: var(--blue-primary);" class="font-semibold">ETH 10%</div>
                             </div>
                             <div class="right">
-                                <div class="down bold">-1.15% 24h</div>
-                                <div class="muted">Vol: $89B</div>
+                                <div class="change-down font-semibold">-1.15% 24h</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-header">BTC DOMINANCE TREND</div>
+                    <div class="card-header">BTC Dominance</div>
                     <div class="card-body">
                         <div class="flex justify-between items-center mb-3">
-                            <div>
-                                <div class="bold">BTC.D</div>
-                                <div class="text-xs muted">Bitcoin Market Dominance</div>
-                            </div>
-                            <div class="text-2xl amber bold">52.4%</div>
+                            <span class="font-semibold">BTC.D</span>
+                            <span class="text-2xl font-bold" style="color: var(--blue-primary); font-family: 'JetBrains Mono', monospace;">52.4%</span>
                         </div>
-                        
                         <div class="mb-4">
-                            <div class="flex justify-between text-sm mb-2">
-                                <span>ETH DOMINANCE</span>
-                                <span class="blue bold">9.8%</span>
+                            <div class="flex justify-between text-xs mb-1" style="color: var(--text-muted);">
+                                <span>ETH Dominance</span>
+                                <span>9.8%</span>
                             </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 9.8%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <div class="flex justify-between text-sm mb-2">
-                                <span>STABLECOINS</span>
-                                <span class="bold">8.2%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 8.2%; background: linear-gradient(90deg, var(--text-secondary), var(--text-muted));"></div>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 pt-4 border-t" style="border-color: var(--border-color);">
-                            <div class="metric-row">
-                                <span class="metric-label">BTC Correlation (S&P)</span>
-                                <span class="metric-value">0.45</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">BTC Volatility (30D)</span>
-                                <span class="metric-value">42.5%</span>
+                            <div class="progress-container">
+                                <div class="progress-fill" style="width: 9.8%; background: linear-gradient(90deg, var(--blue-dim), var(--blue-primary));"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-header">CRYPTO FEAR & GREED</div>
+                    <div class="card-header">Fear & Greed</div>
                     <div class="card-body center">
-                        <div class="big-number" style="font-size: 56px;">47</div>
-                        <div class="amber bold text-lg mb-3">NEUTRAL</div>
-                        <div class="text-sm muted mb-4">Last updated: 2 hours ago</div>
-                        
-                        <div class="fear-gauge" style="margin: 15px 0;">
+                        <div class="text-5xl font-bold mb-2" style="color: var(--blue-primary); font-family: 'JetBrains Mono', monospace;">47</div>
+                        <div class="font-semibold mb-3" style="color: var(--blue-primary);">NEUTRAL</div>
+                        <div class="fear-gauge">
                             <div class="fear-indicator" style="left: 47%;"></div>
-                        </div>
-                        
-                        <div class="flex justify-between text-xs mt-2 muted">
-                            <span>0 Extreme Fear</span>
-                            <span>100 Extreme Greed</span>
-                        </div>
-
-                        <div class="mt-4 pt-4 border-t" style="border-color: var(--border-color); text-align: left;">
-                            <div class="metric-row">
-                                <span class="metric-label">Yesterday</span>
-                                <span class="metric-value amber">52 (Neutral)</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">Last Week</span>
-                                <span class="metric-value up">65 (Greed)</span>
-                            </div>
-                            <div class="metric-row">
-                                <span class="metric-label">Last Month</span>
-                                <span class="metric-value down">38 (Fear)</span>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card mb-3">
-                <div class="card-header">TOP 15 CRYPTOCURRENCIES BY MARKET CAP</div>
+            <div class="card">
+                <div class="card-header">Top Cryptocurrencies</div>
                 <div class="card-body overflow-auto" style="max-height: 450px;">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>RANK</th>
-                                <th>NAME</th>
-                                <th>SYMBOL</th>
-                                <th>PRICE</th>
-                                <th>24H %</th>
-                                <th>7D %</th>
-                                <th>30D %</th>
-                                <th>MARKET CAP</th>
-                                <th>VOLUME(24H)</th>
-                                <th>CIRC SUPPLY</th>
-                                <th>MAX SUPPLY</th>
-                                <th>DOMINANCE</th>
+                                <th>Rank</th>
+                                <th>Name</th>
+                                <th>Symbol</th>
+                                <th class="right">Price</th>
+                                <th class="right">24h %</th>
+                                <th class="right">7d %</th>
+                                <th class="right">Market Cap</th>
                             </tr>
                         </thead>
                         <tbody id="cryptoTableBody"></tbody>
                     </table>
                 </div>
             </div>
-
-            <div class="grid-2">
-                <div class="card">
-                    <div class="card-header">DEFI TOTAL VALUE LOCKED</div>
-                    <div class="card-body">
-                        <div class="big-number mb-2">$78.5B</div>
-                        <div class="text-sm muted mb-4">Total Value Locked in DeFi</div>
-                        <div class="metric-row">
-                            <span class="metric-label">Ethereum</span>
-                            <span class="metric-value">$48.2B (61%)</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">Tron</span>
-                            <span class="metric-value">$8.1B (10%)</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">BNB Chain</span>
-                            <span class="metric-value">$4.5B (6%)</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">Arbitrum</span>
-                            <span class="metric-value">$3.2B (4%)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">CRYPTO ETF FLOWS</div>
-                    <div class="card-body">
-                        <div class="metric-row">
-                            <span class="metric-label">IBIT (BlackRock)</span>
-                            <span class="metric-value up">+$450M</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">FBTC (Fidelity)</span>
-                            <span class="metric-value up">+$120M</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">ARKB (ARK)</span>
-                            <span class="metric-value down">-$45M</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">GBTC (Grayscale)</span>
-                            <span class="metric-value down">-$180M</span>
-                        </div>
-                        <div class="mt-4 pt-4 border-t" style="border-color: var(--border-color);">
-                            <div class="flex justify-between items-center">
-                                <span class="bold">Net ETF Flow (24h)</span>
-                                <span class="up bold text-lg">+$345M</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- ETF CENTER -->
         <div id="view-etfs" class="view-section">
-            <div class="card mb-3">
-                <div class="card-header">THEMATIC ETF FAMILIES - BY CATEGORY</div>
+            <div class="card mb-2">
+                <div class="card-header">ETF Families</div>
                 <div class="card-body">
                     <div class="grid-5" id="thematicEtfFamilies"></div>
                 </div>
             </div>
 
-            <div class="grid-2 mb-3">
-                <div class="card">
-                    <div class="card-header">ETF DETAIL TABLE - COMPREHENSIVE METRICS</div>
-                    <div class="card-body overflow-auto" style="max-height: 450px;">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>TICKER</th>
-                                    <th>THEME</th>
-                                    <th>REC</th>
-                                    <th>PRICE</th>
-                                    <th>CHG%</th>
-                                    <th>AUM</th>
-                                    <th>EXPENSE</th>
-                                    <th>YIELD</th>
-                                    <th>BETA</th>
-                                </tr>
-                            </thead>
-                            <tbody id="etfDetailTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">ETF RISK ANALYSIS</div>
-                    <div class="card-body overflow-auto" style="max-height: 450px;">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>TICKER</th>
-                                    <th>VOLATILITY</th>
-                                    <th>SHARPE</th>
-                                    <th>MAX DD</th>
-                                    <th>SORTINO</th>
-                                    <th>ALPHA</th>
-                                </tr>
-                            </thead>
-                            <tbody id="etfRiskTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
             <div class="card">
-                <div class="card-header">SMART BETA & FACTOR ETFS</div>
-                <div class="card-body">
-                    <div class="grid-6 gap-3" id="smartBetaGrid"></div>
+                <div class="card-header">ETF Detail</div>
+                <div class="card-body overflow-auto" style="max-height: 500px;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Ticker</th>
+                                <th>Theme</th>
+                                <th>Signal</th>
+                                <th class="right">Price</th>
+                                <th class="right">%Chg</th>
+                                <th class="right">AUM</th>
+                                <th class="right">Yield</th>
+                                <th class="right">Beta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="etfDetailTable"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -1786,11 +1466,20 @@
     </div>
 </div>
 
-<!-- Ticker Detail Overlay -->
+<!-- Ticker Detail Overlay - Professional Layout -->
 <div id="tickerDetailOverlay" class="ticker-detail-overlay">
-    <button class="detail-close" onclick="closeTickerDetail()">✕ CLOSE</button>
-    <div class="ticker-detail-container" id="tickerDetailContent">
-        <!-- Dynamic content loaded here -->
+    <div class="detail-container">
+        <div class="detail-header-bar">
+            <div class="logo">
+                <div class="logo-icon">FZ</div>
+                <span class="logo-text">FinZee</span>
+            </div>
+            <button class="detail-close" onclick="closeTickerDetail()">✕ Close</button>
+        </div>
+        
+        <div id="tickerDetailContent">
+            <!-- Dynamic content -->
+        </div>
     </div>
 </div>
 
@@ -1811,11 +1500,8 @@ setInterval(() => {
     });
 }, 1000);
 
-// Fetch with cache
 async function fetchWithCache(url) {
-    if (state.cache.has(url)) {
-        return state.cache.get(url);
-    }
+    if (state.cache.has(url)) return state.cache.get(url);
     try {
         const response = await fetch(url);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -1829,7 +1515,6 @@ async function fetchWithCache(url) {
     }
 }
 
-// Initialize
 async function init() {
     await fetchAllData();
     renderAll();
@@ -1839,18 +1524,16 @@ async function init() {
 async function fetchAllData() {
     const indices = ['SPY', 'QQQ', 'IWM', 'DIA'];
     const sectors = ['XLF', 'XLK', 'XLE', 'XLV', 'XLI', 'XLP', 'XLY', 'XLU', 'XLRE', 'XLC', 'XLB'];
-    const thematicEtfs = ['ARKK', 'ARKQ', 'ARKW', 'ARKG', 'ARKF', 'ARKX', 'BOTZ', 'LIT', 'ICLN', 'SMH', 'CLOU', 'FINX', 'SOCL', 'CIBR', 'PHO'];
-    const innovationStocks = ['NVDA', 'TSLA', 'AVGO', 'AMD', 'CRM', 'PLTR', 'INTC', 'SNOW', 'COIN', 'SQ', 'SOFI', 'RKLB', 'ASTS', 'AI', 'PATH'];
-    const bonds = ['TLT', 'HYG', 'LQD', 'SHY', 'IEF'];
+    const thematicEtfs = ['ARKK', 'ARKQ', 'ARKW', 'ARKG', 'ARKF', 'SMH', 'BOTZ', 'LIT', 'ICLN'];
+    const innovationStocks = ['NVDA', 'TSLA', 'AVGO', 'AMD', 'CRM', 'PLTR', 'INTC', 'SNOW', 'COIN', 'SQ'];
+    const bonds = ['TLT', 'HYG', 'LQD'];
     
     const allTickers = [...new Set([...indices, ...sectors, ...thematicEtfs, ...innovationStocks, ...bonds])];
     
     try {
         const data = await fetchWithCache(`${API_BASE}/ticker?ticker=${allTickers.join(',')}`);
         if (Array.isArray(data)) {
-            data.forEach(d => {
-                if (d.ticker) state.data[d.ticker] = d;
-            });
+            data.forEach(d => { if (d.ticker) state.data[d.ticker] = d; });
         }
     } catch (e) {
         console.error('Failed to fetch data:', e);
@@ -1869,54 +1552,46 @@ function renderAll() {
     loadCharts();
 }
 
-function getRecBadge(change) {
+function getSignal(change) {
     if (change > 2) return '<span class="rec-badge rec-buy">BUY</span>';
     if (change < -2) return '<span class="rec-badge rec-sell">SELL</span>';
     return '<span class="rec-badge rec-hold">HOLD</span>';
 }
 
-function getTrendBadge(change) {
-    if (change > 5) return '<span class="rec-badge rec-buy">STRONG BUY</span>';
-    if (change > 2) return '<span class="rec-badge rec-buy">BUY</span>';
-    if (change > -2) return '<span class="rec-badge rec-hold">HOLD</span>';
-    if (change > -5) return '<span class="rec-badge rec-sell">SELL</span>';
-    return '<span class="rec-badge rec-sell">STRONG SELL</span>';
+function formatChange(change, includeSign = true) {
+    const isUp = change >= 0;
+    const sign = includeSign && isUp ? '+' : '';
+    const className = isUp ? 'change-up' : 'change-down';
+    return `<span class="${className}">${sign}${change.toFixed(2)}%</span>`;
 }
 
-// Search Ticker - Opens Detail Page
+// Search Ticker - Opens Professional Detail Page
 async function searchTicker(query) {
     if (!query) return;
     query = query.toUpperCase().trim();
     
-    // Show loading
     const overlay = document.getElementById('tickerDetailOverlay');
     const content = document.getElementById('tickerDetailContent');
     overlay.classList.add('active');
     
     content.innerHTML = `
-        <div class="detail-header">
-            <div class="flex items-center gap-4">
-                <span class="logo">LOADING ${query}...</span>
-            </div>
+        <div style="text-align: center; padding: 60px; color: var(--text-muted);">
+            <div style="font-size: 24px; margin-bottom: 16px;">Loading ${query}...</div>
+            <div style="width: 40px; height: 40px; border: 3px solid var(--border-subtle); border-top-color: var(--blue-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
         </div>
     `;
     
     try {
-        // Fetch ticker data
         const data = await fetchWithCache(`${API_BASE}/ticker?ticker=${query}`);
         const tickerData = Array.isArray(data) ? data[0] : data;
         
         if (!tickerData || !tickerData.ticker) {
             content.innerHTML = `
-                <div class="detail-header">
-                    <div class="flex items-center gap-4">
-                        <span class="logo">TICKER NOT FOUND: ${query}</span>
-                    </div>
-                </div>
-                <div class="card mt-4">
-                    <div class="card-body">
-                        <p>No data available for ticker symbol "${query}". Please check the symbol and try again.</p>
-                        <p class="muted mt-2">Popular tickers: AAPL, MSFT, GOOGL, AMZN, TSLA, NVDA, META</p>
+                <div class="detail-hero">
+                    <div class="text-center" style="padding: 40px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">⚠</div>
+                        <div style="font-size: 20px; color: var(--text-primary); margin-bottom: 8px;">Ticker Not Found</div>
+                        <div style="color: var(--text-muted);">No data available for "${query}"</div>
                     </div>
                 </div>
             `;
@@ -1925,17 +1600,11 @@ async function searchTicker(query) {
         
         state.currentTicker = tickerData;
         renderTickerDetail(tickerData);
-        
     } catch (e) {
         content.innerHTML = `
-            <div class="detail-header">
-                <div class="flex items-center gap-4">
-                    <span class="logo">ERROR LOADING ${query}</span>
-                </div>
-            </div>
-            <div class="card mt-4">
-                <div class="card-body">
-                    <p>Failed to load data for ${query}. Please try again later.</p>
+            <div class="detail-hero">
+                <div class="text-center" style="padding: 40px; color: var(--red-down);">
+                    <div style="font-size: 20px;">Error loading data. Please try again.</div>
                 </div>
             </div>
         `;
@@ -1945,235 +1614,186 @@ async function searchTicker(query) {
 function renderTickerDetail(data) {
     const change = parseFloat(data.main_info?.oneDayChange) || 0;
     const isUp = change >= 0;
-    const triangle = isUp ? 'triangle-up' : 'triangle-down';
     const p = data.main_info;
     const pp = data.price_performance;
     const ti = data.trading_info;
     const v = data.valuation;
     const r = data.risk;
-    const d = data.dividends;
-    
-    const news = data.recent_news || [];
-    const holdings = data.holdings || [];
     
     const content = document.getElementById('tickerDetailContent');
     
     content.innerHTML = `
-        <div class="detail-header">
-            <div class="flex justify-between items-start">
-                <div>
-                    <div class="flex items-center gap-4 mb-2">
-                        <span class="big-number">${data.ticker}</span>
-                        <span class="rec-badge ${isUp ? 'rec-buy' : 'rec-sell'}">${isUp ? 'BULLISH' : 'BEARISH'}</span>
+        <!-- Hero Section -->
+        <div class="detail-hero">
+            <div class="detail-hero-top">
+                <div class="detail-ticker-section">
+                    <div>
+                        <div class="detail-ticker-badge">${data.ticker}</div>
+                        <div class="detail-company-name">${data.shortName || data.longName || 'N/A'}</div>
+                        <div class="detail-exchange">${data.exchange || 'NYSE'} • ${data.currency || 'USD'} • ${data.quoteType || 'EQUITY'}</div>
                     </div>
-                    <div class="text-lg text-secondary">${data.shortName || data.longName || 'N/A'}</div>
-                    <div class="flex items-center gap-4 mt-2">
-                        <span class="text-sm muted">Exchange: ${data.exchange || 'N/A'}</span>
-                        <span class="text-sm muted">|</span>
-                        <span class="text-sm muted">Currency: ${data.currency || 'USD'}</span>
-                        <span class="text-sm muted">|</span>
-                        <span class="text-sm muted">Type: ${data.quoteType || 'EQUITY'}</span>
+                    <div style="margin-left: 24px;">
+                        ${getSignal(change)}
                     </div>
                 </div>
-                <div class="text-right">
-                    <div class="big-number">${p?.currentPrice?.toFixed(2) || '--'}</div>
-                    <div class="${triangle} ${isUp ? 'up' : 'down'} text-xl bold">
-                        ${isUp ? '+' : ''}${change.toFixed(2)}% 
-                        (${(p?.currentPrice - pp?.previousClose).toFixed(2)})
+                <div class="detail-price-section">
+                    <div class="detail-price" style="color: ${isUp ? 'var(--green-up)' : 'var(--red-down)'};">
+                        ${p?.currentPrice?.toFixed(2) || '--'}
                     </div>
-                    <div class="text-sm muted mt-1">Last updated: ${new Date().toLocaleTimeString()}</div>
+                    <div class="detail-change ${isUp ? 'change-up' : 'change-down'}">
+                        ${isUp ? '+' : ''}${change.toFixed(2)}% (${(p?.currentPrice - pp?.previousClose).toFixed(2)})
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 11px; margin-top: 8px;">
+                        Last updated: ${new Date().toLocaleTimeString()}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-stats-grid">
+                <div class="detail-stat-box">
+                    <div class="detail-stat-label">Open</div>
+                    <div class="detail-stat-value">${pp?.open?.toFixed(2) || '--'}</div>
+                </div>
+                <div class="detail-stat-box">
+                    <div class="detail-stat-label">High</div>
+                    <div class="detail-stat-value change-up">${pp?.dayHigh?.toFixed(2) || '--'}</div>
+                </div>
+                <div class="detail-stat-box">
+                    <div class="detail-stat-label">Low</div>
+                    <div class="detail-stat-value change-down">${pp?.dayLow?.toFixed(2) || '--'}</div>
+                </div>
+                <div class="detail-stat-box">
+                    <div class="detail-stat-label">Volume</div>
+                    <div class="detail-stat-value">${formatVolume(ti?.volume)}</div>
+                </div>
+                <div class="detail-stat-box">
+                    <div class="detail-stat-label">Avg Vol</div>
+                    <div class="detail-stat-value">${formatVolume(ti?.averageVolume)}</div>
+                </div>
+                <div class="detail-stat-box">
+                    <div class="detail-stat-label">Mkt Cap</div>
+                    <div class="detail-stat-value">${v?.marketCap || '--'}</div>
                 </div>
             </div>
         </div>
 
-        <div class="grid-4 gap-4 mb-4">
-            <div class="card">
-                <div class="card-header">PRICE PERFORMANCE</div>
-                <div class="card-body">
-                    <div class="metric-row">
-                        <span class="metric-label">Open</span>
-                        <span class="metric-value">${pp?.open?.toFixed(2) || '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Previous Close</span>
-                        <span class="metric-value">${pp?.previousClose?.toFixed(2) || '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Day High</span>
-                        <span class="metric-value up">${pp?.dayHigh?.toFixed(2) || '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Day Low</span>
-                        <span class="metric-value down">${pp?.dayLow?.toFixed(2) || '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">52W High</span>
-                        <span class="metric-value up">${pp?.fiftyTwoWeekHigh?.toFixed(2) || '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">52W Low</span>
-                        <span class="metric-value down">${pp?.fiftyTwoWeekLow?.toFixed(2) || '--'}</span>
+        <!-- Main Content: Chart + Sidebar -->
+        <div class="detail-main">
+            <!-- Chart Section - Prominent -->
+            <div class="detail-chart-section">
+                <div class="detail-chart-header">
+                    <span class="detail-chart-title">Price Chart</span>
+                    <div class="flex gap-2">
+                        <span class="ticker-badge">1D</span>
+                        <span class="ticker-badge">1W</span>
+                        <span class="ticker-badge">1M</span>
+                        <span class="ticker-badge">3M</span>
+                        <span class="ticker-badge">1Y</span>
                     </div>
                 </div>
+                <div class="detail-chart-container" id="detailChart"></div>
             </div>
 
-            <div class="card">
-                <div class="card-header">TRADING INFO</div>
-                <div class="card-body">
-                    <div class="metric-row">
-                        <span class="metric-label">Volume</span>
-                        <span class="metric-value">${formatVolume(ti?.volume)}</span>
+            <!-- Sidebar Info -->
+            <div class="detail-sidebar">
+                <div class="detail-info-card">
+                    <div class="detail-info-title">Valuation</div>
+                    <div class="detail-metric-row">
+                        <span class="detail-metric-label">P/E Ratio</span>
+                        <span class="detail-metric-value">${p?.PE?.toFixed(2) || '--'}</span>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Avg Volume</span>
-                        <span class="metric-value">${formatVolume(ti?.averageVolume)}</span>
+                    <div class="detail-metric-row">
+                        <span class="detail-metric-label">Forward P/E</span>
+                        <span class="detail-metric-value">${v?.forwardPE?.toFixed(2) || '--'}</span>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Bid</span>
-                        <span class="metric-value">${ti?.bid?.toFixed(2) || '--'}</span>
+                    <div class="detail-metric-row">
+                        <span class="detail-metric-label">Price/Book</span>
+                        <span class="detail-metric-value">${v?.priceToBook?.toFixed(2) || '--'}</span>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Ask</span>
-                        <span class="metric-value">${ti?.ask?.toFixed(2) || '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Bid Size</span>
-                        <span class="metric-value">${ti?.bidSize || '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Ask Size</span>
-                        <span class="metric-value">${ti?.askSize || '--'}</span>
+                    <div class="detail-metric-row">
+                        <span class="detail-metric-label">Price/Sales</span>
+                        <span class="detail-metric-value">${v?.priceToSalesTrailing12Months?.toFixed(2) || '--'}</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <div class="card-header">VALUATION</div>
-                <div class="card-body">
-                    <div class="metric-row">
-                        <span class="metric-label">Market Cap</span>
-                        <span class="metric-value">${v?.marketCap || p?.marketCap || '--'}</span>
+                <div class="detail-info-card">
+                    <div class="detail-info-title">Risk Metrics</div>
+                    <div class="detail-metric-row">
+                        <span class="detail-metric-label">Beta (3Y)</span>
+                        <span class="detail-metric-value">${r?.beta3Year?.toFixed(2) || '--'}</span>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">P/E Ratio</span>
-                        <span class="metric-value">${p?.PE?.toFixed(2) || '--'}</span>
+                    <div class="detail-metric-row">
+                        <span class="detail-metric-label">Beta (5Y)</span>
+                        <span class="detail-metric-value">${r?.beta5Year?.toFixed(2) || '--'}</span>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Forward P/E</span>
-                        <span class="metric-value">${v?.forwardPE?.toFixed(2) || '--'}</span>
+                    <div class="detail-metric-row">
+                        <span class="detail-metric-label">52W High</span>
+                        <span class="detail-metric-value change-up">${pp?.fiftyTwoWeekHigh?.toFixed(2) || '--'}</span>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Price/Book</span>
-                        <span class="metric-value">${v?.priceToBook?.toFixed(2) || '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Price/Sales</span>
-                        <span class="metric-value">${v?.priceToSalesTrailing12Months?.toFixed(2) || '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">PEG Ratio</span>
-                        <span class="metric-value">${v?.pegRatio?.toFixed(2) || '--'}</span>
+                    <div class="detail-metric-row">
+                        <span class="detail-metric-label">52W Low</span>
+                        <span class="detail-metric-value change-down">${pp?.fiftyTwoWeekLow?.toFixed(2) || '--'}</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <div class="card-header">RISK & DIVIDENDS</div>
-                <div class="card-body">
-                    <div class="metric-row">
-                        <span class="metric-label">Beta (3Y)</span>
-                        <span class="metric-value">${r?.beta3Year?.toFixed(2) || '--'}</span>
+                <div class="detail-info-card">
+                    <div class="detail-info-title">Dividends</div>
+                    <div class="detail-metric-row">
+                        <span class="detail-metric-label">Dividend Yield</span>
+                        <span class="detail-metric-value">${data.dividends?.trailingAnnualDividendYield ? (data.dividends.trailingAnnualDividendYield * 100).toFixed(2) + '%' : '--'}</span>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Beta (5Y)</span>
-                        <span class="metric-value">${r?.beta5Year?.toFixed(2) || '--'}</span>
+                    <div class="detail-metric-row">
+                        <span class="detail-metric-label">Ex-Dividend</span>
+                        <span class="detail-metric-value">${data.dividends?.exDividendDate || '--'}</span>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Dividend Yield</span>
-                        <span class="metric-value">${d?.trailingAnnualDividendYield ? (d.trailingAnnualDividendYield * 100).toFixed(2) + '%' : '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Div per Share</span>
-                        <span class="metric-value">${d?.trailingAnnualDividendRate?.toFixed(2) || '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Ex-Dividend</span>
-                        <span class="metric-value">${d?.exDividendDate || '--'}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Payout Ratio</span>
-                        <span class="metric-value">${d?.payoutRatio ? (d.payoutRatio * 100).toFixed(1) + '%' : '--'}</span>
+                    <div class="detail-metric-row">
+                        <span class="detail-metric-label">Payout Ratio</span>
+                        <span class="detail-metric-value">${data.dividends?.payoutRatio ? (data.dividends.payoutRatio * 100).toFixed(1) + '%' : '--'}</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="grid-2 gap-4">
-            <div class="card">
-                <div class="card-header">RECENT NEWS</div>
-                <div class="card-body overflow-auto" style="max-height: 400px;">
-                    ${news.length > 0 ? news.slice(0, 10).map(n => {
-                        const hours = Math.floor((new Date() - new Date(n.pubDate)) / 3600000);
-                        const time = hours < 1 ? 'NOW' : hours < 24 ? `${hours}H AGO` : `${Math.floor(hours/24)}D AGO`;
-                        return `
-                            <div class="news-item">
-                                <div class="flex justify-between mb-1">
-                                    <span class="news-time">${time}</span>
-                                    <span class="news-source">${n.provider}</span>
-                                </div>
-                                <div style="line-height: 1.5;">${n.title}</div>
-                                <div class="text-xs muted mt-1">${n.summary?.substring(0, 150)}${n.summary?.length > 150 ? '...' : ''}</div>
+        <!-- Bottom: News & Holdings -->
+        <div class="detail-bottom">
+            <div class="detail-info-card">
+                <div class="detail-info-title">Recent News</div>
+                <div style="max-height: 300px; overflow: auto;">
+                    ${(data.recent_news || []).slice(0, 8).map(n => `
+                        <div class="news-item" onclick="window.open('${n.link}', '_blank')" style="cursor: pointer;">
+                            <div class="flex justify-between mb-1">
+                                <span class="news-time">${new Date(n.pubDate).toLocaleDateString()}</span>
+                                <span style="color: var(--text-muted); font-size: 10px;">${n.provider}</span>
                             </div>
-                        `;
-                    }).join('') : '<div class="p-4 text-center muted">No recent news available</div>'}
+                            <div style="font-size: 12px; line-height: 1.5;">${n.title}</div>
+                        </div>
+                    `).join('') || '<div style="padding: 20px; color: var(--text-muted); text-align: center;">No recent news</div>'}
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header">TOP HOLDINGS</div>
-                <div class="card-body overflow-auto" style="max-height: 400px;">
-                    ${holdings.length > 0 ? `
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>SYMBOL</th>
-                                    <th>NAME</th>
-                                    <th>WEIGHT</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${holdings.slice(0, 20).map(h => `
-                                    <tr>
-                                        <td><span class="ticker-badge">${h.symbol}</span></td>
-                                        <td>${h.name}</td>
-                                        <td class="right bold">${h.weight?.toFixed(2)}%</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    ` : '<div class="p-4 text-center muted">No holdings data available</div>'}
+            <div class="detail-info-card">
+                <div class="detail-info-title">Top Holdings</div>
+                <div style="max-height: 300px; overflow: auto;">
+                    ${(data.holdings || []).slice(0, 10).map(h => `
+                        <div class="detail-metric-row">
+                            <div class="flex items-center gap-2">
+                                <span class="ticker-badge" style="font-size: 10px;">${h.symbol}</span>
+                                <span style="color: var(--text-secondary); font-size: 11px;">${h.name}</span>
+                            </div>
+                            <span class="detail-metric-value">${h.weight?.toFixed(2)}%</span>
+                        </div>
+                    `).join('') || '<div style="padding: 20px; color: var(--text-muted); text-align: center;">No holdings data</div>'}
                 </div>
-            </div>
-        </div>
-
-        <div class="card mt-4">
-            <div class="card-header">INTERACTIVE CHART</div>
-            <div class="card-body">
-                <div id="detailChart" style="height: 400px; background: var(--bg-panel); border-radius: 4px;"></div>
             </div>
         </div>
     `;
     
-    // Load chart for the ticker
-    setTimeout(() => {
-        loadDetailChart(data.ticker);
-    }, 100);
+    setTimeout(() => loadDetailChart(data.ticker), 100);
 }
 
 function loadDetailChart(symbol) {
     const container = document.getElementById('detailChart');
     if (!container) return;
-    
     container.innerHTML = '';
     
     const script = document.createElement('script');
@@ -2187,8 +1807,8 @@ function loadDetailChart(symbol) {
         style: "1",
         locale: "en",
         enable_publishing: false,
-        backgroundColor: "rgba(18, 18, 18, 1)",
-        gridColor: "rgba(42, 42, 42, 1)",
+        backgroundColor: "rgba(22, 27, 34, 1)",
+        gridColor: "rgba(48, 54, 61, 1)",
         allow_symbol_change: true,
         calendar: false,
         support_host: "https://www.tradingview.com"
@@ -2211,36 +1831,37 @@ function renderTicker() {
     const items = Object.values(state.data).slice(0, 20).map(d => {
         const change = parseFloat(d.main_info?.oneDayChange) || 0;
         const isUp = change >= 0;
-        const triangle = isUp ? 'triangle-up' : 'triangle-down';
         return `
-            <div class="ticker-item" onclick="searchTicker('${d.ticker}')" style="cursor: pointer;">
+            <div class="ticker-item" onclick="searchTicker('${d.ticker}')">
                 <span class="ticker-symbol">${d.ticker}</span>
                 <span class="ticker-price">${d.main_info?.currentPrice?.toFixed(2)}</span>
-                <span class="ticker-change ${triangle} ${isUp ? 'up' : 'down'}">${Math.abs(change).toFixed(2)}%</span>
+                <span class="ticker-change ${isUp ? 'change-up' : 'change-down'}">
+                    ${isUp ? '+' : ''}${change.toFixed(2)}%
+                </span>
             </div>
         `;
     }).join('');
     
     const staticItems = `
-        <div class="ticker-item" onclick="searchTicker('VIX')" style="cursor: pointer;">
+        <div class="ticker-item" onclick="searchTicker('VIX')">
             <span class="ticker-symbol">VIX</span>
             <span class="ticker-price">19.74</span>
-            <span class="ticker-change triangle-up up">+10.09%</span>
+            <span class="ticker-change change-up">+10.09%</span>
         </div>
-        <div class="ticker-item" onclick="searchTicker('DXY')" style="cursor: pointer;">
+        <div class="ticker-item" onclick="searchTicker('DXY')">
             <span class="ticker-symbol">DXY</span>
             <span class="ticker-price">97.74</span>
-            <span class="ticker-change triangle-down down">-0.06%</span>
+            <span class="ticker-change change-down">-0.06%</span>
         </div>
-        <div class="ticker-item" onclick="searchTicker('BTC')" style="cursor: pointer;">
+        <div class="ticker-item" onclick="searchTicker('BTC')">
             <span class="ticker-symbol">BTC</span>
             <span class="ticker-price">67,963</span>
-            <span class="ticker-change triangle-down down">-1.15%</span>
+            <span class="ticker-change change-down">-1.15%</span>
         </div>
-        <div class="ticker-item" onclick="searchTicker('ETH')" style="cursor: pointer;">
+        <div class="ticker-item" onclick="searchTicker('ETH')">
             <span class="ticker-symbol">ETH</span>
             <span class="ticker-price">2,034</span>
-            <span class="ticker-change triangle-down down">-1.79%</span>
+            <span class="ticker-change change-down">-1.79%</span>
         </div>
     `;
     
@@ -2260,30 +1881,26 @@ function renderOutlook() {
         if (!d) return;
         const change = parseFloat(d.main_info?.oneDayChange) || 0;
         const isUp = change >= 0;
-        const triangle = isUp ? 'triangle-up' : 'triangle-down';
         const p = d.main_info;
         const pp = d.price_performance;
         
         document.getElementById(idx.id).innerHTML = `
-            <div class="flex justify-between items-start mb-3">
+            <div class="mini-header">
                 <div>
-                    <div class="text-sm muted mb-1">${idx.name}</div>
-                    <div class="text-3xl bold">${p?.currentPrice?.toFixed(2)}</div>
+                    <div class="mini-title">${idx.name}</div>
+                    <div class="mini-subtitle">${idx.sym}</div>
                 </div>
-                <div class="right">
-                    <div class="${triangle} ${isUp ? 'up' : 'down'} text-xl">${isUp ? '+' : ''}${change.toFixed(2)}%</div>
-                    <div class="text-sm muted mt-1">${(p?.currentPrice - pp?.previousClose).toFixed(2)}</div>
-                </div>
+                ${getSignal(change)}
             </div>
-            <div class="grid-2 gap-2 text-sm mt-3 pt-3 border-t" style="border-color: var(--border-color);">
-                <div class="flex justify-between"><span class="muted">Open:</span><span>${pp?.open?.toFixed(2)}</span></div>
-                <div class="flex justify-between"><span class="muted">High:</span><span class="up">${pp?.dayHigh?.toFixed(2)}</span></div>
-                <div class="flex justify-between"><span class="muted">Low:</span><span class="down">${pp?.dayLow?.toFixed(2)}</span></div>
-                <div class="flex justify-between"><span class="muted">Vol:</span><span>${formatVolume(d.trading_info?.volume)}</span></div>
+            <div class="mini-price" style="color: ${isUp ? 'var(--green-up)' : 'var(--red-down)'};">
+                ${p?.currentPrice?.toFixed(2)}
             </div>
-            <div class="mt-3 pt-3 border-t flex justify-between text-sm" style="border-color: var(--border-color);">
-                <span class="muted">P/E: ${p?.PE?.toFixed(1) || '--'}</span>
-                <span class="muted">Beta: ${d.risk?.beta3Year?.toFixed(2) || '--'}</span>
+            <div class="metric-change ${isUp ? 'change-up' : 'change-down'}">
+                ${isUp ? '+' : ''}${change.toFixed(2)}% • ${(p?.currentPrice - pp?.previousClose).toFixed(2)}
+            </div>
+            <div class="mt-2 pt-2" style="border-top: 1px solid var(--border-subtle); display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px; color: var(--text-muted);">
+                <div>Open: ${pp?.open?.toFixed(2)}</div>
+                <div>Vol: ${formatVolume(d.trading_info?.volume)}</div>
             </div>
         `;
     });
@@ -2294,37 +1911,27 @@ function renderOutlook() {
         if (!d) return '';
         const change = parseFloat(d.main_info?.oneDayChange) || 0;
         const isUp = change >= 0;
-        const triangle = isUp ? 'triangle-up' : 'triangle-down';
         const p = d.main_info;
         const pp = d.price_performance;
-        const ti = d.trading_info;
         
         return `
-            <tr onclick="searchTicker('${sym}')" style="cursor: pointer;">
+            <tr onclick="searchTicker('${sym}')">
                 <td><span class="ticker-badge">${sym}</span></td>
                 <td>${d.shortName?.substring(0, 20)}</td>
-                <td>${getRecBadge(change)}</td>
-                <td class="right bold">${p?.currentPrice?.toFixed(2)}</td>
-                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${(p?.currentPrice - pp?.previousClose).toFixed(2)}</td>
-                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
-                <td class="right muted">${pp?.open?.toFixed(2)}</td>
-                <td class="right up">${pp?.dayHigh?.toFixed(2)}</td>
-                <td class="right down">${pp?.dayLow?.toFixed(2)}</td>
-                <td class="right muted">${pp?.previousClose?.toFixed(2)}</td>
-                <td class="right muted">${formatVolume(ti?.volume)}</td>
-                <td class="right muted">${formatVolume(ti?.averageVolume)}</td>
-                <td class="right muted">${pp?.fiftyTwoWeekHigh?.toFixed(0)}</td>
-                <td class="right muted">${pp?.fiftyTwoWeekLow?.toFixed(0)}</td>
+                <td>${getSignal(change)}</td>
+                <td class="right font-bold">${p?.currentPrice?.toFixed(2)}</td>
+                <td class="right ${isUp ? 'change-up' : 'change-down'}">${(p?.currentPrice - pp?.previousClose).toFixed(2)}</td>
+                <td class="right ${isUp ? 'change-up' : 'change-down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
+                <td class="right" style="color: var(--text-muted);">${formatVolume(d.trading_info?.volume)}</td>
                 <td class="right">${p?.PE?.toFixed(1) || '--'}</td>
                 <td class="right">${d.risk?.beta3Year?.toFixed(2) || '--'}</td>
-                <td class="right muted">${d.valuation?.marketCap || p?.marketCap || '--'}</td>
             </tr>
         `;
     }).join('');
 
     const nasdaqData = state.data['QQQ'];
     const news = nasdaqData?.recent_news || [];
-    document.getElementById('newsFeedOutlook').innerHTML = news.slice(0, 8).map(n => {
+    document.getElementById('newsFeedOutlook').innerHTML = news.slice(0, 6).map(n => {
         const hours = Math.floor((new Date() - new Date(n.pubDate)) / 3600000);
         const time = hours < 1 ? 'NOW' : hours < 24 ? `${hours}H AGO` : `${Math.floor(hours/24)}D AGO`;
         return `
@@ -2333,10 +1940,10 @@ function renderOutlook() {
                     <span class="news-time">${time}</span>
                     <span class="news-source">${n.provider}</span>
                 </div>
-                <div style="line-height: 1.5;">${n.title}</div>
+                <div style="font-size: 12px; line-height: 1.5;">${n.title}</div>
             </div>
         `;
-    }).join('') || '<div class="p-4 text-center muted">No recent news</div>';
+    }).join('') || '<div style="padding: 20px; color: var(--text-muted); text-align: center;">No recent news</div>';
 }
 
 function renderSectors() {
@@ -2359,19 +1966,18 @@ function renderSectors() {
         if (!d) return '';
         const change = parseFloat(d.main_info?.oneDayChange) || 0;
         const isUp = change >= 0;
-        const intensity = Math.min(Math.abs(change) * 20, 100);
+        const intensity = Math.min(Math.abs(change) * 15, 100);
         
-        let bg;
-        if (isUp) {
-            bg = `linear-gradient(145deg, rgba(74, 222, 128, ${0.2 + intensity*0.005}) 0%, rgba(34, 197, 94, ${0.15 + intensity*0.003}) 100%)`;
-        } else {
-            bg = `linear-gradient(145deg, rgba(248, 113, 113, ${0.2 + intensity*0.005}) 0%, rgba(239, 68, 68, ${0.15 + intensity*0.003}) 100%)`;
-        }
+        const bg = isUp 
+            ? `background: rgba(63, 185, 80, ${0.1 + intensity*0.003}); border-color: rgba(63, 185, 80, 0.3);`
+            : `background: rgba(248, 81, 73, ${0.1 + intensity*0.003}); border-color: rgba(248, 81, 73, 0.3);`;
         
         return `
-            <div class="heatmap-cell" onclick="searchTicker('${s.t}')" style="background: ${bg}; border-color: ${isUp ? 'rgba(74,222,128,0.3)' : 'rgba(248,113,113,0.3)'};">
-                <div class="heatmap-label" style="color: ${isUp ? 'var(--accent-green)' : 'var(--accent-red)'};">${s.n}</div>
-                <div class="heatmap-change" style="color: ${isUp ? 'var(--accent-green-dim)' : 'var(--accent-red-dim)'};">${change > 0 ? '+' : ''}${change.toFixed(2)}%</div>
+            <div class="heatmap-cell" onclick="searchTicker('${s.t}')" style="${bg}">
+                <div class="heatmap-label" style="color: ${isUp ? 'var(--green-up)' : 'var(--red-down)'};">${s.n}</div>
+                <div class="heatmap-change" style="color: ${isUp ? 'var(--green-up)' : 'var(--red-down)'};">
+                    ${change > 0 ? '+' : ''}${change.toFixed(2)}%
+                </div>
                 <div class="heatmap-weight">${s.weight}%</div>
             </div>
         `;
@@ -2382,42 +1988,32 @@ function renderSectors() {
         if (!d) return '';
         const change = parseFloat(d.main_info?.oneDayChange) || 0;
         const isUp = change >= 0;
-        const triangle = isUp ? 'triangle-up' : 'triangle-down';
         const p = d.main_info;
-        const pp = d.price_performance;
-        const ti = d.trading_info;
         
         return `
-            <tr onclick="searchTicker('${s.t}')" style="cursor: pointer;">
-                <td class="amber bold">${s.n}</td>
+            <tr onclick="searchTicker('${s.t}')">
+                <td style="color: var(--blue-primary); font-weight: 600;">${s.n}</td>
                 <td><span class="ticker-badge">${s.t}</span></td>
-                <td>${getRecBadge(change)}</td>
-                <td class="right bold">${p?.currentPrice?.toFixed(2)}</td>
-                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${(p?.currentPrice - pp?.previousClose).toFixed(2)}</td>
-                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
-                <td class="right muted">${formatVolume(ti?.volume)}</td>
+                <td>${getSignal(change)}</td>
+                <td class="right font-bold">${p?.currentPrice?.toFixed(2)}</td>
+                <td class="right ${isUp ? 'change-up' : 'change-down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
+                <td class="right ${isUp ? 'change-up' : 'change-down'}">${isUp ? '+' : ''}${(change * 12).toFixed(1)}%</td>
                 <td class="right">${p?.PE?.toFixed(1) || '--'}</td>
-                <td class="right">${d.risk?.beta3Year?.toFixed(2) || '--'}</td>
-                <td class="right ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${(change * 12).toFixed(1)}%</td>
             </tr>
         `;
     }).join('');
 
-    // Sector fundamentals
     document.getElementById('sectorFundamentalsTable').innerHTML = sectors.map(s => {
         const d = state.data[s.t];
         if (!d) return '';
-        const change = parseFloat(d.main_info?.oneDayChange) || 0;
         
         return `
             <tr>
-                <td class="amber bold">${s.n}</td>
+                <td style="color: var(--blue-primary); font-weight: 600;">${s.n}</td>
                 <td class="right">${d.valuation?.marketCap || '--'}</td>
                 <td class="right">${s.weight}%</td>
-                <td class="right up">+${(Math.random() * 20 + 5).toFixed(1)}%</td>
-                <td class="right up">+${(Math.random() * 15 + 3).toFixed(1)}%</td>
+                <td class="right change-up">+${(Math.random() * 20 + 5).toFixed(1)}%</td>
                 <td class="right">${(Math.random() * 3).toFixed(2)}%</td>
-                <td class="right">${Math.floor(Math.random() * 40 + 30)}</td>
             </tr>
         `;
     }).join('');
@@ -2434,20 +2030,19 @@ function renderAssets() {
         const p = d.main_info;
         
         return `
-            <div class="mini-card" style="border-left: 4px solid ${isUp ? 'var(--accent-green)' : 'var(--accent-red)'}; cursor: pointer;" onclick="searchTicker('${t}')">
-                <div class="symbol-tag">${t}</div>
-                <div class="flex justify-between items-start mt-5">
-                    <span class="amber bold">${t}</span>
-                    <span class="${isUp ? 'up' : 'down'} text-sm bold">${isUp ? '+' : ''}${change.toFixed(2)}%</span>
+            <div class="mini-card" onclick="searchTicker('${t}')" style="border-left: 3px solid ${isUp ? 'var(--green-up)' : 'var(--red-down)'};">
+                <div class="mini-header">
+                    <div>
+                        <div class="mini-title">${t}</div>
+                        <div class="mini-subtitle">${d.shortName?.substring(0, 20)}</div>
+                    </div>
+                    <span class="${isUp ? 'change-up' : 'change-down'} font-bold">${isUp ? '+' : ''}${change.toFixed(2)}%</span>
                 </div>
-                <div class="text-sm muted mt-1 truncate">${d.shortName?.substring(0, 25)}</div>
-                <div class="flex justify-between items-end mt-3">
-                    <span class="bold text-xl">${p?.currentPrice?.toFixed(2)}</span>
-                    <span class="text-sm muted">P/E: ${p?.PE?.toFixed(1) || '--'}</span>
+                <div class="mini-price" style="color: ${isUp ? 'var(--green-up)' : 'var(--red-down)'};">
+                    ${p?.currentPrice?.toFixed(2)}
                 </div>
-                <div class="mt-3 pt-3 border-t flex justify-between text-sm" style="border-color: var(--border-color);">
-                    <span class="muted">Vol: ${formatVolume(d.trading_info?.volume)}</span>
-                    <span class="muted">Beta: ${d.risk?.beta3Year?.toFixed(2) || '--'}</span>
+                <div class="mt-2" style="font-size: 11px; color: var(--text-muted);">
+                    Vol: ${formatVolume(d.trading_info?.volume)}
                 </div>
             </div>
         `;
@@ -2458,40 +2053,35 @@ function renderAssets() {
         if (!d) return '';
         const change = parseFloat(d.main_info?.oneDayChange) || 0;
         const isUp = change >= 0;
-        const triangle = isUp ? 'triangle-up' : 'triangle-down';
         const p = d.main_info;
-        const pp = d.price_performance;
-        const ti = d.trading_info;
         
         return `
-            <tr onclick="searchTicker('${t}')" style="cursor: pointer;">
+            <tr onclick="searchTicker('${t}')">
                 <td><span class="ticker-badge">${t}</span></td>
                 <td>${d.shortName?.substring(0, 25)}</td>
-                <td>${getRecBadge(change)}</td>
-                <td class="right bold">${p?.currentPrice?.toFixed(2)}</td>
-                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
-                <td class="right muted">${d.valuation?.marketCap || '--'}</td>
-                <td class="right muted">${(Math.random() * 0.5 + 0.03).toFixed(2)}%</td>
-                <td class="right ${Math.random() > 0.5 ? 'up' : 'down'}">${Math.random() > 0.5 ? '+' : '-'}${formatVolume(Math.random() * 1000000000)}</td>
+                <td>${getSignal(change)}</td>
+                <td class="right font-bold">${p?.currentPrice?.toFixed(2)}</td>
+                <td class="right ${isUp ? 'change-up' : 'change-down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
+                <td class="right" style="color: var(--text-muted);">${d.valuation?.marketCap || '--'}</td>
+                <td class="right" style="color: var(--text-muted);">${(Math.random() * 0.5 + 0.03).toFixed(2)}%</td>
             </tr>
         `;
     }).join('');
 
-    // Performance matrix
     document.getElementById('etfPerformanceTable').innerHTML = etfList.slice(0, 12).map(t => {
         const d = state.data[t];
         if (!d) return '';
         const change = parseFloat(d.main_info?.oneDayChange) || 0;
         
-        const periods = ['1D', '1W', '1M', '3M', 'YTD', '1Y', '3Y'];
-        const values = periods.map((_, i) => {
-            const base = change * (i + 1) * (Math.random() > 0.5 ? 1 : -0.5);
-            const isPos = base >= 0;
-            return `<td class="right ${isPos ? 'up' : 'down'}">${isPos ? '+' : ''}${base.toFixed(2)}%</td>`;
+        const periods = ['1D', '1W', '1M', 'YTD', '1Y'];
+        const values = periods.map(() => {
+            const val = change * (Math.random() * 10 - 2);
+            const isPos = val >= 0;
+            return `<td class="right ${isPos ? 'change-up' : 'change-down'}">${isPos ? '+' : ''}${val.toFixed(2)}%</td>`;
         }).join('');
         
         return `
-            <tr onclick="searchTicker('${t}')" style="cursor: pointer;">
+            <tr onclick="searchTicker('${t}')">
                 <td><span class="ticker-badge">${t}</span></td>
                 ${values}
             </tr>
@@ -2513,86 +2103,20 @@ function renderStocks() {
         if (!d) return '';
         const change = parseFloat(d.main_info?.oneDayChange) || 0;
         const isUp = change >= 0;
-        const triangle = isUp ? 'triangle-up' : 'triangle-down';
         const p = d.main_info;
-        const pp = d.price_performance;
-        const ti = d.trading_info;
-        const eps = p?.PE ? (p.currentPrice / p.PE).toFixed(2) : '--';
-        const newsCount = d.recent_news?.length || 0;
         
         return `
-            <tr onclick="searchTicker('${s}')" style="cursor: pointer;">
+            <tr onclick="searchTicker('${s}')">
                 <td><span class="ticker-badge">${s}</span></td>
                 <td>${d.shortName?.substring(0, 22)}</td>
-                <td><span class="cyan bold">${themes[s] || 'TECH'}</span></td>
-                <td>${getRecBadge(change)}</td>
-                <td class="right bold">${p?.currentPrice?.toFixed(2)}</td>
-                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${(p?.currentPrice - pp?.previousClose).toFixed(2)}</td>
-                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
-                <td class="right muted">${p?.marketCap || '--'}</td>
+                <td style="color: var(--blue-primary); font-weight: 500;">${themes[s] || 'TECH'}</td>
+                <td>${getSignal(change)}</td>
+                <td class="right font-bold">${p?.currentPrice?.toFixed(2)}</td>
+                <td class="right ${isUp ? 'change-up' : 'change-down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
+                <td class="right" style="color: var(--text-muted);">${p?.marketCap || '--'}</td>
                 <td class="right">${p?.PE?.toFixed(1) || '--'}</td>
-                <td class="right">${eps}</td>
                 <td class="right">${d.risk?.beta3Year?.toFixed(2) || '--'}</td>
-                <td class="right">${Math.floor(Math.random() * 40 + 30)}</td>
-                <td class="right ${newsCount > 5 ? 'amber bold' : 'muted'}">${newsCount}</td>
             </tr>
-        `;
-    }).join('');
-
-    // AI Leaders mini cards
-    const aiStocks = ['NVDA', 'AMD', 'AVGO', 'INTC', 'SMH'];
-    document.getElementById('aiLeaders').innerHTML = aiStocks.map(s => {
-        const d = state.data[s];
-        if (!d) return '';
-        const change = parseFloat(d.main_info?.oneDayChange) || 0;
-        const isUp = change >= 0;
-        
-        return `
-            <div class="etf-mini-row" onclick="searchTicker('${s}')" style="cursor: pointer;">
-                <div class="flex items-center gap-2">
-                    <span class="ticker-badge">${s}</span>
-                    <span class="muted">${d.shortName?.substring(0, 20)}</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="bold">${d.main_info?.currentPrice?.toFixed(2)}</span>
-                    <span class="${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</span>
-                </div>
-            </div>
-        `;
-    }).join('');
-
-    // Fintech leaders
-    const fintechStocks = ['COIN', 'SQ', 'SOFI', 'HOOD', 'AFRM'];
-    document.getElementById('fintechLeaders').innerHTML = fintechStocks.map(s => {
-        const d = state.data[s];
-        if (!d) {
-            return `
-                <div class="etf-mini-row">
-                    <div class="flex items-center gap-2">
-                        <span class="ticker-badge">${s}</span>
-                        <span class="muted">Fintech Stock</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="bold">${(Math.random() * 200 + 50).toFixed(2)}</span>
-                        <span class="up">+${(Math.random() * 5).toFixed(2)}%</span>
-                    </div>
-                </div>
-            `;
-        }
-        const change = parseFloat(d.main_info?.oneDayChange) || 0;
-        const isUp = change >= 0;
-        
-        return `
-            <div class="etf-mini-row" onclick="searchTicker('${s}')" style="cursor: pointer;">
-                <div class="flex items-center gap-2">
-                    <span class="ticker-badge">${s}</span>
-                    <span class="muted">${d.shortName?.substring(0, 20)}</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="bold">${d.main_info?.currentPrice?.toFixed(2)}</span>
-                    <span class="${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</span>
-                </div>
-            </div>
         `;
     }).join('');
 }
@@ -2622,79 +2146,61 @@ function renderBonds() {
     document.getElementById('forexGrid').innerHTML = forex.map(f => {
         const isUp = f.c >= 0;
         return `
-            <div class="mini-card center" style="cursor: pointer;">
-                <div class="amber bold mb-2">${f.p}</div>
-                <div class="text-xl bold mb-2">${f.r.toFixed(4)}</div>
-                <div class="${isUp ? 'up' : 'down'} text-sm bold">${isUp ? '+' : ''}${f.c}%</div>
+            <div class="mini-card center" onclick="searchTicker('${f.p.replace('/', '')}')">
+                <div style="color: var(--blue-primary); font-weight: 600; margin-bottom: 8px;">${f.p}</div>
+                <div class="text-xl font-bold mb-2" style="font-family: 'JetBrains Mono', monospace;">${f.r.toFixed(4)}</div>
+                <div class="${isUp ? 'change-up' : 'change-down'} font-semibold">${isUp ? '+' : ''}${f.c}%</div>
             </div>
         `;
     }).join('');
 
     const rates = [
-        {c: 'USA', cb: 'FED', r: '4.25-4.50%', p: '4.25-4.50%', ch: '0.00', n: 'MAR 19', y10: '4.32%', sp: '0.07%', cc: 'DXY', cp: -0.06},
-        {c: 'EUROZONE', cb: 'ECB', r: '2.90%', p: '2.90%', ch: '0.00', n: 'MAR 06', y10: '2.45%', sp: '-0.45%', cc: 'EUR', cp: 0.12},
-        {c: 'UK', cb: 'BOE', r: '4.50%', p: '4.75%', ch: '-0.25', n: 'MAR 20', y10: '4.52%', sp: '0.02%', cc: 'GBP', cp: -0.08},
-        {c: 'JAPAN', cb: 'BOJ', r: '0.50%', p: '0.25%', ch: '+0.25', n: 'MAR 19', y10: '1.35%', sp: '0.85%', cc: 'JPY', cp: -0.45},
-        {c: 'CANADA', cb: 'BOC', r: '3.00%', p: '3.25%', ch: '-0.25', n: 'MAR 12', y10: '3.22%', sp: '0.22%', cc: 'CAD', cp: -0.15},
-        {c: 'AUSTRALIA', cb: 'RBA', r: '4.10%', p: '4.35%', ch: '-0.25', n: 'FEB 18', y10: '4.45%', sp: '0.35%', cc: 'AUD', cp: 0.35}
+        {c: 'USA', cb: 'Fed', r: '4.25-4.50%', ch: '0.00', n: 'Mar 19', y10: '4.32%'},
+        {c: 'EUROZONE', cb: 'ECB', r: '2.90%', ch: '0.00', n: 'Mar 06', y10: '2.45%'},
+        {c: 'UK', cb: 'BoE', r: '4.50%', ch: '-0.25', n: 'Mar 20', y10: '4.52%'},
+        {c: 'JAPAN', cb: 'BoJ', r: '0.50%', ch: '+0.25', n: 'Mar 19', y10: '1.35%'},
+        {c: 'CANADA', cb: 'BoC', r: '3.00%', ch: '-0.25', n: 'Mar 12', y10: '3.22%'},
+        {c: 'AUSTRALIA', cb: 'RBA', r: '4.10%', ch: '-0.25', n: 'Feb 18', y10: '4.45%'}
     ];
     
-    document.getElementById('ratesTableBody').innerHTML = rates.map(r => {
-        const isUp = r.cp >= 0;
-        return `
-            <tr>
-                <td class="bold">${r.c}</td>
-                <td class="muted">${r.cb}</td>
-                <td class="amber bold">${r.r}</td>
-                <td class="muted">${r.p}</td>
-                <td class="${r.ch.includes('+') ? 'up' : r.ch.includes('-') ? 'down' : 'muted'} bold">${r.ch}</td>
-                <td class="blue">${r.n}</td>
-                <td class="right">${r.y10}</td>
-                <td class="right">${r.sp}</td>
-                <td class="amber">${r.cc}</td>
-                <td class="right ${isUp ? 'up' : 'down'} bold">${isUp ? '+' : ''}${r.cp}%</td>
-            </tr>
-        `;
-    }).join('');
+    document.getElementById('ratesTableBody').innerHTML = rates.map(r => `
+        <tr>
+            <td class="font-semibold">${r.c}</td>
+            <td style="color: var(--text-muted);">${r.cb}</td>
+            <td class="right" style="color: var(--blue-primary); font-weight: 600;">${r.r}</td>
+            <td class="right ${r.ch.includes('+') ? 'change-up' : r.ch.includes('-') ? 'change-down' : ''}">${r.ch}</td>
+            <td style="color: var(--blue-primary);">${r.n}</td>
+            <td class="right">${r.y10}</td>
+        </tr>
+    `).join('');
 }
 
 function renderCrypto() {
     const cryptos = [
-        {r: 1, n: 'Bitcoin', s: 'BTC', p: 67963.04, c24: -1.15, c7: -2.4, c30: 12.5, m: '1.35T', v: '41.9B', cs: '19.8M', ms: '21M', d: '52.4%'},
-        {r: 2, n: 'Ethereum', s: 'ETH', p: 2034.63, c24: -1.79, c7: -5.2, c30: 8.3, m: '245.6B', v: '22.6B', cs: '120.7M', ms: '∞', d: '9.8%'},
-        {r: 3, n: 'Tether', s: 'USDT', p: 1.00, c24: -0.00, c7: 0.01, c30: 0.02, m: '183.6B', v: '82.5B', cs: '183.6B', ms: '--', d: '7.3%'},
-        {r: 4, n: 'BNB', s: 'BNB', p: 629.92, c24: 0.17, c7: 2.5, c30: 15.2, m: '85.9B', v: '2.8B', cs: '136.4M', ms: '200M', d: '3.4%'},
-        {r: 5, n: 'XRP', s: 'XRP', p: 1.41, c24: -3.24, c7: -8.5, c30: -12.3, m: '85.7B', v: '3.2B', cs: '61.0B', ms: '100B', d: '3.4%'},
-        {r: 6, n: 'USDC', s: 'USDC', p: 1.00, c24: -0.02, c7: 0.00, c30: 0.01, m: '75.3B', v: '11.6B', cs: '75.3B', ms: '--', d: '3.0%'},
-        {r: 7, n: 'Solana', s: 'SOL', p: 86.99, c24: -1.00, c7: -12.5, c30: -5.8, m: '49.5B', v: '3.8B', cs: '568.8M', ms: '--', d: '1.9%'},
-        {r: 8, n: 'TRON', s: 'TRX', p: 0.28, c24: -0.70, c7: 5.2, c30: 18.5, m: '27.0B', v: '444.8M', cs: '94.7B', ms: '--', d: '1.1%'},
-        {r: 9, n: 'Dogecoin', s: 'DOGE', p: 0.098, c24: -1.96, c7: -15.2, c30: -22.1, m: '16.7B', v: '1.1B', cs: '168.9B', ms: '--', d: '0.6%'},
-        {r: 10, n: 'Cardano', s: 'ADA', p: 0.29, c24: -1.40, c7: -8.8, c30: -18.5, m: '10.6B', v: '611.1M', cs: '36.1B', ms: '45B', d: '0.4%'},
-        {r: 11, n: 'Avalanche', s: 'AVAX', p: 25.45, c24: -2.15, c7: -10.2, c30: -8.3, m: '9.8B', v: '485.2M', cs: '385.2M', ms: '720M', d: '0.4%'},
-        {r: 12, n: 'Chainlink', s: 'LINK', p: 14.82, c24: 1.25, c7: 3.8, c30: 22.5, m: '9.2B', v: '385.5M', cs: '620.3M', ms: '1B', d: '0.3%'},
-        {r: 13, n: 'Polygon', s: 'MATIC', p: 0.42, c24: -0.85, c7: -6.2, c30: -15.8, m: '4.1B', v: '225.8M', cs: '9.8B', ms: '10B', d: '0.2%'},
-        {r: 14, n: 'Litecoin', s: 'LTC', p: 68.25, c24: 0.45, c7: 2.1, c30: 5.2, m: '5.1B', v: '285.4M', cs: '74.8M', ms: '84M', d: '0.2%'},
-        {r: 15, n: 'Internet Computer', s: 'ICP', p: 8.45, c24: -3.25, c7: -12.8, c30: -28.5, m: '3.9B', v: '125.6M', cs: '462.5M', ms: '--', d: '0.2%'}
+        {r: 1, n: 'Bitcoin', s: 'BTC', p: 67963.04, c24: -1.15, c7: -2.4, m: '1.35T'},
+        {r: 2, n: 'Ethereum', s: 'ETH', p: 2034.63, c24: -1.79, c7: -5.2, m: '245.6B'},
+        {r: 3, n: 'Tether', s: 'USDT', p: 1.00, c24: 0.00, c7: 0.01, m: '183.6B'},
+        {r: 4, n: 'BNB', s: 'BNB', p: 629.92, c24: 0.17, c7: 2.5, m: '85.9B'},
+        {r: 5, n: 'XRP', s: 'XRP', p: 1.41, c24: -3.24, c7: -8.5, m: '85.7B'},
+        {r: 6, n: 'USDC', s: 'USDC', p: 1.00, c24: -0.02, c7: 0.00, m: '75.3B'},
+        {r: 7, n: 'Solana', s: 'SOL', p: 86.99, c24: -1.00, c7: -12.5, m: '49.5B'},
+        {r: 8, n: 'TRON', s: 'TRX', p: 0.28, c24: -0.70, c7: 5.2, m: '27.0B'},
+        {r: 9, n: 'Dogecoin', s: 'DOGE', p: 0.098, c24: -1.96, c7: -15.2, m: '16.7B'},
+        {r: 10, n: 'Cardano', s: 'ADA', p: 0.29, c24: -1.40, c7: -8.8, m: '10.6B'}
     ];
     
     document.getElementById('cryptoTableBody').innerHTML = cryptos.map(c => {
-        const isUp = c.c24 >= 0;
+        const isUp24 = c.c24 >= 0;
         const isUp7 = c.c7 >= 0;
-        const isUp30 = c.c30 >= 0;
         return `
-            <tr>
-                <td class="amber bold">${c.r}</td>
-                <td class="bold">${c.n}</td>
-                <td class="blue bold">${c.s}</td>
-                <td class="right bold">${c.p.toLocaleString()}</td>
-                <td class="right ${isUp ? 'up' : 'down'} bold">${isUp ? '+' : ''}${c.c24}%</td>
-                <td class="right ${isUp7 ? 'up' : 'down'} bold">${isUp7 ? '+' : ''}${c.c7}%</td>
-                <td class="right ${isUp30 ? 'up' : 'down'} bold">${isUp30 ? '+' : ''}${c.c30}%</td>
-                <td class="right">${c.m}</td>
-                <td class="right muted">${c.v}</td>
-                <td class="right muted">${c.cs}</td>
-                <td class="right muted">${c.ms}</td>
-                <td class="right amber bold">${c.d}</td>
+            <tr onclick="searchTicker('${c.s}')">
+                <td style="color: var(--blue-primary); font-weight: 700;">${c.r}</td>
+                <td class="font-semibold">${c.n}</td>
+                <td style="color: var(--blue-primary); font-weight: 600;">${c.s}</td>
+                <td class="right font-bold" style="font-family: 'JetBrains Mono', monospace;">${c.p.toLocaleString()}</td>
+                <td class="right ${isUp24 ? 'change-up' : 'change-down'} font-semibold">${isUp24 ? '+' : ''}${c.c24}%</td>
+                <td class="right ${isUp7 ? 'change-up' : 'change-down'} font-semibold">${isUp7 ? '+' : ''}${c.c7}%</td>
+                <td class="right" style="color: var(--text-muted);">${c.m}</td>
             </tr>
         `;
     }).join('');
@@ -2702,116 +2208,11 @@ function renderCrypto() {
 
 function renderETFs() {
     const etfFamilies = [
-        {
-            name: 'ARK INVEST',
-            theme: 'Disruptive Innovation',
-            etfs: [
-                {t: 'ARKK', n: 'Innovation'},
-                {t: 'ARKQ', n: 'Robotics'},
-                {t: 'ARKW', n: 'Web3/AI'},
-                {t: 'ARKG', n: 'Genomics'},
-                {t: 'ARKF', n: 'Fintech'}
-            ]
-        },
-        {
-            name: 'VANGUARD',
-            theme: 'Core Index',
-            etfs: [
-                {t: 'VOO', n: 'S&P 500'},
-                {t: 'VTI', n: 'Total Market'},
-                {t: 'VEA', n: 'Developed'},
-                {t: 'VWO', n: 'Emerging'},
-                {t: 'BND', n: 'Bonds'}
-            ]
-        },
-        {
-            name: 'ISHARES',
-            theme: 'Sector & Style',
-            etfs: [
-                {t: 'IVV', n: 'S&P 500'},
-                {t: 'IWM', n: 'Russell 2000'},
-                {t: 'EFA', n: 'EAFE'},
-                {t: 'AGG', n: 'Bonds'},
-                {t: 'IEMG', n: 'EM'}
-            ]
-        },
-        {
-            name: 'TECHNOLOGY',
-            theme: 'Semiconductors & AI',
-            etfs: [
-                {t: 'SMH', n: 'Semiconductors'},
-                {t: 'BOTZ', n: 'Robotics/AI'},
-                {t: 'CLOU', n: 'Cloud'},
-                {t: 'CIBR', n: 'Cybersecurity'},
-                {t: 'FINX', n: 'Fintech'}
-            ]
-        },
-        {
-            name: 'CLEAN ENERGY',
-            theme: 'Sustainability',
-            etfs: [
-                {t: 'ICLN', n: 'Global Clean'},
-                {t: 'LIT', n: 'Lithium'},
-                {t: 'TAN', n: 'Solar'},
-                {t: 'FAN', n: 'Wind'},
-                {t: 'PBW', n: 'WilderHill'}
-            ]
-        },
-        {
-            name: 'HEALTHCARE',
-            theme: 'Biotech & Pharma',
-            etfs: [
-                {t: 'XBI', n: 'Biotech'},
-                {t: 'IBB', n: 'Nasdaq Bio'},
-                {t: 'XLV', n: 'Health Care'},
-                {t: 'ARKG', n: 'Genomics'},
-                {t: 'PPH', n: 'Pharma'}
-            ]
-        },
-        {
-            name: 'COMMODITIES',
-            theme: 'Hard Assets',
-            etfs: [
-                {t: 'GLD', n: 'Gold'},
-                {t: 'SLV', n: 'Silver'},
-                {t: 'USO', n: 'Oil'},
-                {t: 'UNG', n: 'Natural Gas'},
-                {t: 'DBA', n: 'Agriculture'}
-            ]
-        },
-        {
-            name: 'REAL ESTATE',
-            theme: 'REITs & Property',
-            etfs: [
-                {t: 'VNQ', n: 'Real Estate'},
-                {t: 'SCHH', n: 'REITs'},
-                {t: 'IYR', n: 'US Real Estate'},
-                {t: 'REM', n: 'Mortgage REITs'},
-                {t: 'XLRE', n: 'S&P REITs'}
-            ]
-        },
-        {
-            name: 'FIXED INCOME',
-            theme: 'Bonds & Debt',
-            etfs: [
-                {t: 'TLT', n: '20+ Year'},
-                {t: 'HYG', n: 'High Yield'},
-                {t: 'LQD', n: 'Inv Grade'},
-                {t: 'BIL', n: '1-3 Month'},
-                {t: 'TIP', n: 'TIPS'}
-            ]
-        },
-        {
-            name: 'INTERNATIONAL',
-            theme: 'Global Exposure',
-            etfs: [
-                {t: 'VEU', n: 'All-World'},
-                {t: 'VWO', n: 'Emerging'},
-                {t: 'IEFA', n: 'EAFE'},
-                {t: 'EWJ', n: 'Japan'},
-                {t: 'EEM', n: 'Emerging Mkts'}
-            ]
-        }
+        {name: 'ARK Invest', theme: 'Disruptive Innovation', etfs: [{t: 'ARKK', n: 'Innovation'}, {t: 'ARKQ', n: 'Robotics'}, {t: 'ARKW', n: 'Web3'}, {t: 'ARKG', n: 'Genomics'}, {t: 'ARKF', n: 'Fintech'}]},
+        {name: 'Vanguard', theme: 'Core Index', etfs: [{t: 'VOO', n: 'S&P 500'}, {t: 'VTI', n: 'Total Market'}, {t: 'VEA', n: 'Developed'}, {t: 'VWO', n: 'Emerging'}, {t: 'BND', n: 'Bonds'}]},
+        {name: 'iShares', theme: 'Sector & Style', etfs: [{t: 'IVV', n: 'S&P 500'}, {t: 'IWM', n: 'Russell 2000'}, {t: 'EFA', n: 'EAFE'}, {t: 'AGG', n: 'Bonds'}, {t: 'IEMG', n: 'EM'}]},
+        {name: 'Technology', theme: 'Semiconductors', etfs: [{t: 'SMH', n: 'Semiconductors'}, {t: 'BOTZ', n: 'Robotics'}, {t: 'CLOU', n: 'Cloud'}, {t: 'CIBR', n: 'Cybersec'}, {t: 'FINX', n: 'Fintech'}]},
+        {name: 'Clean Energy', theme: 'Sustainability', etfs: [{t: 'ICLN', n: 'Global Clean'}, {t: 'LIT', n: 'Lithium'}, {t: 'TAN', n: 'Solar'}, {t: 'FAN', n: 'Wind'}, {t: 'PBW', n: 'WilderHill'}]}
     ];
 
     document.getElementById('thematicEtfFamilies').innerHTML = etfFamilies.map(family => {
@@ -2822,14 +2223,14 @@ function renderETFs() {
             const price = d ? d.main_info?.currentPrice?.toFixed(2) : (Math.random() * 100 + 50).toFixed(2);
             
             return `
-                <div class="etf-mini-row" onclick="searchTicker('${e.t}')" style="cursor: pointer;">
+                <div class="etf-row" onclick="searchTicker('${e.t}')">
                     <div class="flex items-center gap-2">
-                        <span class="ticker-badge" style="font-size: 10px; padding: 2px 8px;">${e.t}</span>
-                        <span class="muted" style="font-size: 10px;">${e.n}</span>
+                        <span class="ticker-badge" style="font-size: 10px;">${e.t}</span>
+                        <span style="color: var(--text-muted); font-size: 11px;">${e.n}</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="bold">${price}</span>
-                        <span class="${isUp ? 'up' : 'down'} text-xs" style="font-size: 10px;">${isUp ? '+' : ''}${change.toFixed(2)}%</span>
+                    <div class="flex items-center gap-3">
+                        <span class="font-bold" style="font-family: 'JetBrains Mono', monospace;">${price}</span>
+                        <span class="${isUp ? 'change-up' : 'change-down'}" style="font-size: 11px;">${isUp ? '+' : ''}${change.toFixed(2)}%</span>
                     </div>
                 </div>
             `;
@@ -2838,8 +2239,8 @@ function renderETFs() {
         return `
             <div class="etf-family-card">
                 <div class="etf-family-header">
-                    <div>${family.name}</div>
-                    <div style="font-size: 9px; opacity: 0.7;">${family.theme}</div>
+                    <div class="etf-family-name">${family.name}</div>
+                    <div class="etf-family-theme">${family.theme}</div>
                 </div>
                 <div class="etf-family-list">
                     ${etfRows}
@@ -2854,79 +2255,29 @@ function renderETFs() {
         if (!d) return '';
         const change = parseFloat(d.main_info?.oneDayChange) || 0;
         const isUp = change >= 0;
-        const triangle = isUp ? 'triangle-up' : 'triangle-down';
         const p = d.main_info;
-        const pp = d.price_performance;
-        
         const family = etfFamilies.find(f => f.etfs.some(e => e.t === t));
         
         return `
-            <tr onclick="searchTicker('${t}')" style="cursor: pointer;">
+            <tr onclick="searchTicker('${t}')">
                 <td><span class="ticker-badge">${t}</span></td>
                 <td>${family?.theme || 'THEMATIC'}</td>
-                <td>${getRecBadge(change)}</td>
-                <td class="right bold">${p?.currentPrice?.toFixed(2)}</td>
-                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
-                <td class="right muted">${d.valuation?.marketCap || '--'}</td>
-                <td class="right muted">${(Math.random() * 0.5 + 0.03).toFixed(2)}%</td>
-                <td class="right muted">${d.dividends?.trailingAnnualDividendYield ? (d.dividends.trailingAnnualDividendYield * 100).toFixed(2) + '%' : '--'}</td>
+                <td>${getSignal(change)}</td>
+                <td class="right font-bold">${p?.currentPrice?.toFixed(2)}</td>
+                <td class="right ${isUp ? 'change-up' : 'change-down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
+                <td class="right" style="color: var(--text-muted);">${d.valuation?.marketCap || '--'}</td>
+                <td class="right" style="color: var(--text-muted);">${d.dividends?.trailingAnnualDividendYield ? (d.dividends.trailingAnnualDividendYield * 100).toFixed(2) + '%' : '--'}</td>
                 <td class="right">${d.risk?.beta3Year?.toFixed(2) || '--'}</td>
             </tr>
-        `;
-    }).join('');
-
-    // Risk table
-    document.getElementById('etfRiskTable').innerHTML = allEtfs.slice(0, 20).map(t => {
-        const d = state.data[t];
-        const vol = (Math.random() * 30 + 10).toFixed(1);
-        const sharpe = (Math.random() * 2 - 0.5).toFixed(2);
-        const maxDD = -(Math.random() * 40 + 10).toFixed(1);
-        const sortino = (Math.random() * 2).toFixed(2);
-        const alpha = (Math.random() * 10 - 2).toFixed(2);
-        
-        return `
-            <tr>
-                <td><span class="ticker-badge">${t}</span></td>
-                <td class="right">${vol}%</td>
-                <td class="right ${sharpe > 1 ? 'up' : sharpe < 0 ? 'down' : ''}">${sharpe}</td>
-                <td class="right down">${maxDD}%</td>
-                <td class="right">${sortino}</td>
-                <td class="right ${alpha > 0 ? 'up' : 'down'}">${alpha}%</td>
-            </tr>
-        `;
-    }).join('');
-
-    // Smart Beta grid
-    const factors = [
-        {n: 'VALUE', t: 'VTV', d: 'Large Value'},
-        {n: 'GROWTH', t: 'VUG', d: 'Large Growth'},
-        {n: 'MOMENTUM', t: 'MTUM', d: 'US Momentum'},
-        {n: 'QUALITY', t: 'QUAL', d: 'US Quality'},
-        {n: 'LOW VOL', t: 'USMV', d: 'Min Volatility'},
-        {n: 'DIVIDEND', t: 'VYM', d: 'High Dividend'}
-    ];
-    
-    document.getElementById('smartBetaGrid').innerHTML = factors.map(f => {
-        const d = state.data[f.t];
-        const change = d ? parseFloat(d.main_info?.oneDayChange) || 0 : (Math.random() * 3 - 1);
-        const isUp = change >= 0;
-        const price = d ? d.main_info?.currentPrice?.toFixed(2) : (Math.random() * 200 + 100).toFixed(2);
-        
-        return `
-            <div class="stat-box" style="cursor: pointer;" onclick="searchTicker('${f.t}')">
-                <div class="amber bold mb-1">${f.n}</div>
-                <div class="text-xs muted mb-2">${f.d}</div>
-                <div class="text-lg bold">${price}</div>
-                <div class="${isUp ? 'up' : 'down'} text-sm">${isUp ? '+' : ''}${change.toFixed(2)}%</div>
-            </div>
         `;
     }).join('');
 }
 
 function loadCharts() {
-    loadTradingView('chartSPY', 'AMEX:SPY');
-    loadTradingView('chartDIA', 'AMEX:DIA');
-    loadTradingView('chartQQQ', 'NASDAQ:QQQ');
+    ['chartSPY', 'chartQQQ', 'chartDIA'].forEach((id, i) => {
+        const symbols = ['AMEX:SPY', 'NASDAQ:QQQ', 'AMEX:DIA'];
+        loadTradingView(id, symbols[i]);
+    });
 }
 
 function loadTradingView(containerId, symbol) {
@@ -2943,11 +2294,10 @@ function loadTradingView(containerId, symbol) {
         locale: 'en',
         dateRange: '1D',
         colorTheme: 'dark',
-        trendLineColor: '#ffb347',
-        underLineColor: 'rgba(255, 179, 71, 0.1)',
+        trendLineColor: '#58a6ff',
+        underLineColor: 'rgba(88, 166, 255, 0.1)',
         isTransparent: true,
-        autosize: true,
-        largeChartUrl: ''
+        autosize: true
     });
     
     const div = document.createElement('div');
@@ -2977,15 +2327,8 @@ function switchView(view) {
     if (view === 'outlook') setTimeout(loadCharts, 100);
 }
 
-function focusSymbol(symbol) {
-    document.getElementById('searchInput').value = symbol;
-}
-
-// Close overlay on escape key
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeTickerDetail();
-    }
+    if (e.key === 'Escape') closeTickerDetail();
 });
 
 init();

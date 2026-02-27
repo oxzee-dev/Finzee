@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL PRO | Bloomberg Style Market Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0c0c0c;
+            --bg-panel: #141414;
+            --bg-card: #1a1a1a;
+            --bg-hover: #1f1f1f;
+            --border-color: #2d2d2d;
+            --border-light: #3a3a3a;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9590;
+            --text-muted: #5c5855;
+            
+            /* Smooth Warm Orange-Yellow Palette */
+            --amber-primary: #ffb347;
+            --amber-bright: #ffc857;
+            --amber-glow: #ffaa33;
+            --amber-soft: #ffd17a;
+            --amber-dim: #cc8a2b;
+            --amber-dark: #8b5a00;
+            
+            --accent-green: #4ade80;
+            --accent-green-dim: #22c55e;
+            --accent-red: #f87171;
+            --accent-red-dim: #ef4444;
+            --accent-blue: #60a5fa;
+            --accent-cyan: #22d3ee;
+        }
+
+        * {
+            font-family: 'Courier Prime', 'Courier New', monospace;
+            box-sizing: border-box;
+            font-size: 11px;
+            letter-spacing: -0.2px;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            line-height: 1.2;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--amber-primary); }
+
+        /* Layout */
+        .terminal-grid {
+            display: grid;
+            grid-template-rows: 28px 32px 32px 1fr;
+            height: 100vh;
+            gap: 1px;
+            background: var(--border-color);
+        }
+
+        .cell {
+            background: var(--bg-dark);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            color: var(--amber-primary);
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 179, 71, 0.3);
+        }
+
+        /* Ticker */
+        .ticker-wrap {
+            overflow: hidden;
+            white-space: nowrap;
+            background: var(--bg-panel);
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .ticker-content {
+            display: inline-flex;
+            animation: ticker 90s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 24px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .ticker-symbol { color: var(--amber-primary); font-weight: 700; font-size: 12px; }
+        .ticker-price { color: var(--text-primary); font-weight: 600; }
+        .ticker-change { font-weight: 700; }
+
+        /* Navigation Tape */
+        .nav-tape {
+            display: flex;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .nav-item {
+            padding: 8px 20px;
+            cursor: pointer;
+            border-right: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-card);
+            color: var(--amber-soft);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--amber-primary) 0%, var(--amber-glow) 100%);
+            color: var(--bg-dark);
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(255, 179, 71, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            overflow: auto;
+            padding: 8px;
+        }
+
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        /* Cards - Enhanced with warm glow */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            margin-bottom: 8px;
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: var(--amber-dim);
+            box-shadow: 0 4px 12px rgba(255, 179, 71, 0.1);
+        }
+
+        .card-header {
+            background: linear-gradient(90deg, rgba(255,179,71,0.1) 0%, var(--bg-panel) 50%, rgba(255,179,71,0.05) 100%);
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--amber-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .card-body {
+            padding: 8px;
+        }
+
+        /* Enhanced Tables with Dynamic Colors */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 10px;
+        }
+
+        .data-table th {
+            background: linear-gradient(180deg, var(--bg-panel) 0%, rgba(255,179,71,0.05) 100%);
+            color: var(--amber-primary);
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 2px solid var(--amber-dim);
+            position: sticky;
+            top: 0;
+            text-transform: uppercase;
+            font-size: 9px;
+            letter-spacing: 0.8px;
+            text-shadow: 0 0 5px rgba(255, 179, 71, 0.2);
+        }
+
+        .data-table td {
+            padding: 6px 10px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            transition: all 0.15s ease;
+        }
+
+        .data-table tr:hover td {
+            background: linear-gradient(90deg, rgba(255,179,71,0.08) 0%, rgba(255,179,71,0.03) 100%);
+            cursor: pointer;
+            border-bottom-color: var(--amber-dim);
+        }
+
+        .data-table tr:nth-child(even) td {
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        .data-table tr:nth-child(even):hover td {
+            background: linear-gradient(90deg, rgba(255,179,71,0.1) 0%, rgba(255,179,71,0.04) 100%);
+        }
+
+        /* Badge Style for Tickers */
+        .ticker-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: linear-gradient(135deg, rgba(255,179,71,0.15) 0%, rgba(255,200,87,0.1) 100%);
+            border: 1px solid var(--amber-dim);
+            border-radius: 3px;
+            color: var(--amber-primary);
+            font-weight: 700;
+            font-size: 10px;
+            text-shadow: 0 0 5px rgba(255, 179, 71, 0.3);
+            box-shadow: 0 0 8px rgba(255, 179, 71, 0.1);
+        }
+
+        .ticker-badge:hover {
+            background: linear-gradient(135deg, rgba(255,179,71,0.25) 0%, rgba(255,200,87,0.15) 100%);
+            box-shadow: 0 0 12px rgba(255, 179, 71, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Recommendation Badges */
+        .rec-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: 700;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rec-buy {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green-dim);
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.15);
+        }
+
+        .rec-sell {
+            background: linear-gradient(135deg, rgba(248, 113, 113, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red-dim);
+            box-shadow: 0 0 8px rgba(248, 113, 113, 0.15);
+        }
+
+        .rec-hold {
+            background: linear-gradient(135deg, rgba(255,179,71,0.2) 0%, rgba(255,170,51,0.1) 100%);
+            color: var(--amber-primary);
+            border: 1px solid var(--amber-dim);
+            box-shadow: 0 0 8px rgba(255, 179, 71, 0.15);
+        }
+
+        /* Grid Layouts */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+
+        /* Enhanced Mini Cards */
+        .mini-card {
+            background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-panel) 100%);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            position: relative;
+            transition: all 0.2s ease;
+            border-radius: 3px;
+        }
+
+        .mini-card:hover {
+            border-color: var(--amber-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 15px rgba(255, 179, 71, 0.15);
+        }
+
+        .symbol-tag {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, var(--amber-primary) 0%, var(--amber-glow) 100%);
+            color: var(--bg-dark);
+            padding: 3px 8px;
+            font-size: 9px;
+            font-weight: 700;
+            border-radius: 0 0 4px 0;
+            box-shadow: 0 2px 8px rgba(255, 179, 71, 0.3);
+        }
+
+        /* Square Heatmap */
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(11, 1fr);
+            gap: 3px;
+            margin-bottom: 8px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+            border: 1px solid transparent;
+        }
+
+        .heatmap-cell:hover {
+            z-index: 10;
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            border-color: var(--amber-primary);
+        }
+
+        .heatmap-label {
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 2;
+            font-size: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .heatmap-change {
+            font-size: 8px;
+            z-index: 2;
+            font-weight: 600;
+        }
+
+        .heatmap-weight {
+            position: absolute;
+            bottom: 2px;
+            font-size: 7px;
+            opacity: 0.7;
+        }
+
+        /* Colors */
+        .up { color: var(--accent-green); }
+        .down { color: var(--accent-red); }
+        .amber { color: var(--amber-primary); }
+        .blue { color: var(--accent-blue); }
+        .cyan { color: var(--accent-cyan); }
+        .muted { color: var(--text-muted); }
+
+        /* Triangles */
+        .triangle-up::before {
+            content: "▲";
+            margin-right: 3px;
+            color: var(--accent-green);
+            font-size: 8px;
+        }
+        .triangle-down::before {
+            content: "▼";
+            margin-right: 3px;
+            color: var(--accent-red);
+            font-size: 8px;
+        }
+
+        /* Flash Animation */
+        @keyframes flashUp {
+            0% { background: rgba(74, 222, 128, 0.4); }
+            100% { background: transparent; }
+        }
+        @keyframes flashDown {
+            0% { background: rgba(248, 113, 113, 0.4); }
+            100% { background: transparent; }
+        }
+        .flash-up { animation: flashUp 0.6s ease-out; }
+        .flash-down { animation: flashDown 0.6s ease-out; }
+
+        /* Status Indicators */
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 4px;
+        }
+        .status-live { 
+            background: var(--accent-green); 
+            box-shadow: 0 0 8px var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Input */
+        .terminal-input {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--amber-primary);
+            padding: 4px 10px;
+            font-family: inherit;
+            font-size: 11px;
+            outline: none;
+            width: 140px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+        .terminal-input:focus {
+            border-color: var(--amber-primary);
+            box-shadow: 0 0 12px rgba(255, 179, 71, 0.3);
+        }
+
+        /* Chart Container */
+        .chart-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            height: 140px;
+            position: relative;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        /* News Item */
+        .news-item {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.15s;
+            border-left: 2px solid transparent;
+        }
+        .news-item:hover {
+            background: rgba(255, 179, 71, 0.05);
+            border-left-color: var(--amber-primary);
+            padding-left: 12px;
+        }
+        .news-time {
+            color: var(--amber-primary);
+            font-size: 9px;
+            font-weight: 700;
+        }
+        .news-source {
+            color: var(--text-muted);
+            font-size: 9px;
+        }
+
+        /* ETF Card Enhanced */
+        .etf-card {
+            background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-panel) 100%);
+            border-left: 3px solid var(--amber-primary);
+            padding: 8px 10px;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+            border-radius: 0 3px 3px 0;
+        }
+        .etf-card:hover {
+            background: linear-gradient(145deg, rgba(255,179,71,0.1) 0%, var(--bg-panel) 100%);
+            border-left-width: 5px;
+            transform: translateX(2px);
+        }
+
+        /* Stats Grid */
+        .stat-box {
+            background: linear-gradient(145deg, var(--bg-panel) 0%, var(--bg-card) 100%);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: center;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+        .stat-box:hover {
+            border-color: var(--amber-dim);
+            box-shadow: 0 0 12px rgba(255, 179, 71, 0.1);
+        }
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 9px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* Yield Curve */
+        .yield-curve-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 120px;
+            padding: 10px;
+            gap: 4px;
+        }
+
+        .yield-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            min-width: 30px;
+        }
+
+        .yield-fill {
+            width: 100%;
+            background: linear-gradient(180deg, var(--amber-primary) 0%, var(--amber-dim) 100%);
+            border-radius: 2px 2px 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .yield-fill:hover {
+            background: linear-gradient(180deg, var(--amber-bright) 0%, var(--amber-primary) 100%);
+            box-shadow: 0 0 15px rgba(255, 179, 71, 0.4);
+        }
+
+        .yield-value {
+            color: var(--amber-primary);
+            font-weight: 700;
+            font-size: 9px;
+            margin-bottom: 4px;
+        }
+
+        .yield-label {
+            color: var(--text-secondary);
+            font-size: 8px;
+            margin-top: 4px;
+        }
+
+        /* ETF Family Cards */
+        .etf-family-card {
+            background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-panel) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .etf-family-card:hover {
+            border-color: var(--amber-dim);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .etf-family-header {
+            background: linear-gradient(90deg, rgba(255,179,71,0.15) 0%, transparent 100%);
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 700;
+            color: var(--amber-primary);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .etf-family-list {
+            padding: 6px;
+        }
+
+        .etf-mini-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 10px;
+            transition: all 0.15s;
+        }
+
+        .etf-mini-row:hover {
+            background: rgba(255,179,71,0.05);
+            border-radius: 2px;
+        }
+
+        .etf-mini-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Helpers */
+        .right { text-align: right; }
+        .center { text-align: center; }
+        .bold { font-weight: 700; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-1 { gap: 4px; }
+        .gap-2 { gap: 8px; }
+        .p-2 { padding: 8px; }
+        .px-2 { padding-left: 8px; padding-right: 8px; }
+        .py-1 { padding-top: 4px; padding-bottom: 4px; }
+        .mb-2 { margin-bottom: 8px; }
+        .mt-2 { margin-top: 8px; }
+        .overflow-auto { overflow: auto; }
+        .hidden { display: none; }
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+
+        /* Loading */
+        .loading {
+            color: var(--amber-primary);
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Section divider */
+        .section-divider {
+            border-top: 1px solid var(--border-color);
+            margin: 8px 0;
+            padding-top: 8px;
+        }
+
+        /* Compact table rows */
+        .compact-row td {
+            padding: 5px 8px;
+            font-size: 10px;
+        }
+
+        /* Progress bars */
+        .progress-bar {
+            height: 4px;
+            background: var(--bg-panel);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--amber-primary) 0%, var(--amber-bright) 100%);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        /* Fear gauge */
+        .fear-gauge {
+            height: 8px;
+            background: linear-gradient(90deg, var(--accent-green) 0%, var(--amber-primary) 50%, var(--accent-red) 100%);
+            border-radius: 4px;
+            position: relative;
+            margin: 8px 0;
+        }
+
+        .fear-indicator {
+            position: absolute;
+            top: -4px;
+            width: 4px;
+            height: 16px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+            transition: left 0.3s ease;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+<div class="terminal-grid">
+    <!-- Header -->
+    <div class="cell header-bar">
+        <div class="flex items-center gap-3">
+            <span class="logo">◆ TERMINAL PRO</span>
+            <span class="text-xs muted">|</span>
+            <span class="text-xs text-secondary">MARKET DATA v2.0</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <input type="text" class="terminal-input" placeholder="SEARCH TICKER..." id="searchInput" onkeypress="if(event.key==='Enter') searchTicker(this.value)">
+            <span class="muted">|</span>
+            <span id="clock" class="amber bold">--:--:--</span>
+            <span class="muted">ET</span>
+            <span class="status-dot status-live"></span>
+            <span class="up text-xs bold">LIVE</span>
+        </div>
+    </div>
+
+    <!-- Rolling Ticker -->
+    <div class="cell ticker-wrap">
+        <div class="ticker-content" id="tickerTape">
+            <span class="loading">Loading market data...</span>
+        </div>
+    </div>
+
+    <!-- Navigation Tape -->
+    <div class="cell nav-tape">
+        <div class="nav-item active" onclick="switchView('outlook')">
+            <span>◆</span> MARKET OUTLOOK
+        </div>
+        <div class="nav-item" onclick="switchView('sectors')">
+            <span>◆</span> SECTORS
+        </div>
+        <div class="nav-item" onclick="switchView('assets')">
+            <span>◆</span> ASSETS
+        </div>
+        <div class="nav-item" onclick="switchView('stocks')">
+            <span>◆</span> STOCKS
+        </div>
+        <div class="nav-item" onclick="switchView('bonds')">
+            <span>◆</span> BONDS & FX
+        </div>
+        <div class="nav-item" onclick="switchView('crypto')">
+            <span>◆</span> CRYPTO
+        </div>
+        <div class="nav-item" onclick="switchView('etfs')">
+            <span>◆</span> ETF CENTER
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="cell main-content">
+        
+        <!-- MARKET OUTLOOK - Restructured -->
+        <div id="view-outlook" class="view-section active">
+            
+            <!-- Top Row: Major Indices -->
+            <div class="grid-4 mb-2">
+                <div class="card">
+                    <div class="card-header">S&P 500 (SPY)</div>
+                    <div class="card-body" id="spyCard"></div>
+                </div>
+                <div class="card">
+                    <div class="card-header">NASDAQ 100 (QQQ)</div>
+                    <div class="card-body" id="qqqCard"></div>
+                </div>
+                <div class="card">
+                    <div class="card-header">RUSSELL 2000 (IWM)</div>
+                    <div class="card-body" id="iwmCard"></div>
+                </div>
+                <div class="card">
+                    <div class="card-header">DOW JONES (DIA)</div>
+                    <div class="card-body" id="diaCard"></div>
+                </div>
+            </div>
+
+            <!-- Second Row: Fear Gauge + Market Breadth -->
+            <div class="grid-2 mb-2">
+                <div class="card">
+                    <div class="card-header">FEAR & VOLATILITY</div>
+                    <div class="card-body">
+                        <div class="mb-4 p-3 border-b" style="border-color: var(--border-color);">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="bold">VIX INDEX</span>
+                                <span class="text-xl up triangle-up">19.74</span>
+                            </div>
+                            <div class="flex justify-between text-xs mb-3">
+                                <span class="muted">VOLATILITY</span>
+                                <span class="up bold">+10.09%</span>
+                            </div>
+                            <div class="fear-gauge">
+                                <div class="fear-indicator" style="left: 35%;"></div>
+                            </div>
+                            <div class="flex justify-between text-xs mt-1 muted">
+                                <span>10L</span>
+                                <span>50H</span>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="bold">DXY INDEX</span>
+                                <span class="text-xl down triangle-down">97.74</span>
+                            </div>
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="muted">US DOLLAR</span>
+                                <span class="down bold">-0.06%</span>
+                            </div>
+                            <div class="flex justify-between text-xs muted">
+                                <span>95.55L</span>
+                                <span>107.66H</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">MARKET BREADTH</div>
+                    <div class="card-body">
+                        <div class="grid-2 gap-2 mb-3">
+                            <div class="stat-box" style="border-left: 3px solid var(--accent-green);">
+                                <div class="stat-value up">2,847</div>
+                                <div class="stat-label">ADVANCING</div>
+                            </div>
+                            <div class="stat-box" style="border-left: 3px solid var(--accent-red);">
+                                <div class="stat-value down">4,203</div>
+                                <div class="stat-label">DECLINING</div>
+                            </div>
+                        </div>
+                        <div class="text-xs muted mb-2">NYSE ADVANCE/DECLINE RATIO</div>
+                        <div class="flex justify-between text-xs mb-1 py-2 border-b" style="border-color: var(--border-color);">
+                            <span>NYSE</span>
+                            <span class="down bold">0.68</span>
+                        </div>
+                        <div class="flex justify-between text-xs mb-1 py-2 border-b" style="border-color: var(--border-color);">
+                            <span>NASDAQ</span>
+                            <span class="down bold">0.71</span>
+                        </div>
+                        <div class="flex justify-between text-xs py-2">
+                            <span>AMEX</span>
+                            <span class="up bold">1.12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Third Row: Charts Below Fear & Breadth -->
+            <div class="grid-3 mb-2">
+                <div class="card">
+                    <div class="card-header">SPY CHART</div>
+                    <div class="card-body">
+                        <div class="chart-box" id="chartSPY"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">QQQ CHART</div>
+                    <div class="card-body">
+                        <div class="chart-box" id="chartQQQ"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">DIA CHART</div>
+                    <div class="card-body">
+                        <div class="chart-box" id="chartDIA"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fourth Row: Detailed Indices Table -->
+            <div class="card mb-2">
+                <div class="card-header">INDICES & ASSETS DETAIL - REAL TIME DATA</div>
+                <div class="card-body overflow-auto" style="max-height: 200px;">
+                    <table class="data-table compact-row">
+                        <thead>
+                            <tr>
+                                <th>SYMBOL</th>
+                                <th>NAME</th>
+                                <th>LAST</th>
+                                <th>CHG</th>
+                                <th>%CHG</th>
+                                <th>OPEN</th>
+                                <th>HIGH</th>
+                                <th>LOW</th>
+                                <th>CLOSE</th>
+                                <th>VOLUME</th>
+                                <th>AVG VOL</th>
+                                <th>52W HIGH</th>
+                                <th>52W LOW</th>
+                                <th>P/E</th>
+                                <th>BETA</th>
+                                <th>AUM</th>
+                            </tr>
+                        </thead>
+                        <tbody id="indicesDetailTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Bottom Row: News -->
+            <div class="card">
+                <div class="card-header">BREAKING NEWS - NASDAQ COMPOSITE (^IXIC)</div>
+                <div class="card-body overflow-auto" style="max-height: 180px;" id="newsFeedOutlook"></div>
+            </div>
+        </div>
+
+        <!-- SECTORS - Square Heatmap -->
+        <div id="view-sectors" class="view-section">
+            <div class="card mb-2">
+                <div class="card-header">S&P 500 SECTOR HEATMAP - MARKET CAP WEIGHTED</div>
+                <div class="card-body">
+                    <div id="sectorHeatmap" class="heatmap-grid"></div>
+                    <div class="flex justify-between text-xs muted mt-2">
+                        <span>← HOVER FOR DETAILS | SQUARE = SECTOR | COLOR = PERFORMANCE →</span>
+                        <span>RED: NEGATIVE | GREEN: POSITIVE | AMBER: NEUTRAL</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">SECTOR PERFORMANCE DETAIL - FULL FUNDAMENTALS</div>
+                <div class="card-body overflow-auto" style="max-height: 500px;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>SECTOR</th>
+                                <th>TICKER</th>
+                                <th>REC</th>
+                                <th>PRICE</th>
+                                <th>CHG</th>
+                                <th>%CHG</th>
+                                <th>OPEN</th>
+                                <th>HIGH</th>
+                                <th>LOW</th>
+                                <th>VOLUME</th>
+                                <th>AVG VOL</th>
+                                <th>52W HIGH</th>
+                                <th>52W LOW</th>
+                                <th>P/E</th>
+                                <th>P/B</th>
+                                <th>BETA</th>
+                                <th>MARKET CAP</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sectorTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ASSETS - Enhanced -->
+        <div id="view-assets" class="view-section">
+            <div class="card mb-2">
+                <div class="card-header">TOP 20 ETFS BY ASSETS - COMPREHENSIVE DATA</div>
+                <div class="card-body">
+                    <div class="grid-5" id="etfCardsGrid"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">ETF FUNDAMENTALS & FLOW DATA</div>
+                <div class="card-body overflow-auto" style="max-height: 400px;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>TICKER</th>
+                                <th>NAME</th>
+                                <th>REC</th>
+                                <th>PRICE</th>
+                                <th>CHG%</th>
+                                <th>OPEN</th>
+                                <th>HIGH</th>
+                                <th>LOW</th>
+                                <th>VOLUME</th>
+                                <th>AVG VOL</th>
+                                <th>52W HIGH</th>
+                                <th>52W LOW</th>
+                                <th>P/E</th>
+                                <th>P/B</th>
+                                <th>BETA</th>
+                                <th>AUM</th>
+                                <th>MARKET CAP</th>
+                            </tr>
+                        </thead>
+                        <tbody id="etfFlowTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- STOCKS - Enhanced -->
+        <div id="view-stocks" class="view-section">
+            <div class="card mb-2">
+                <div class="card-header">INNOVATION THEMES - THEMATIC STOCKS LEADERS</div>
+                <div class="card-body overflow-auto" style="max-height: 600px;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>SYMBOL</th>
+                                <th>NAME</th>
+                                <th>THEME</th>
+                                <th>REC</th>
+                                <th>LAST</th>
+                                <th>CHG</th>
+                                <th>%CHG</th>
+                                <th>OPEN</th>
+                                <th>HIGH</th>
+                                <th>LOW</th>
+                                <th>VOLUME</th>
+                                <th>AVG VOL</th>
+                                <th>MKT CAP</th>
+                                <th>P/E</th>
+                                <th>EPS</th>
+                                <th>BETA</th>
+                                <th>52W HIGH</th>
+                                <th>52W LOW</th>
+                                <th>NEWS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stocksTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- BONDS & FX - Corrected Layout -->
+        <div id="view-bonds" class="view-section">
+            <div class="grid-2 mb-2">
+                <div class="card">
+                    <div class="card-header">US TREASURY YIELD CURVE</div>
+                    <div class="card-body">
+                        <div class="yield-curve-container" id="yieldCurve"></div>
+                        <div class="grid-4 gap-2 mt-4 text-xs center">
+                            <div class="stat-box">
+                                <div class="muted">3M</div>
+                                <div class="amber bold">4.42%</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="muted">2Y</div>
+                                <div class="amber bold">4.15%</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="muted">10Y</div>
+                                <div class="amber bold">4.32%</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="muted">30Y</div>
+                                <div class="amber bold">4.58%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">FOREX MATRIX - MAJOR PAIRS</div>
+                    <div class="card-body">
+                        <div class="grid-3 gap-2" id="forexGrid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">GLOBAL RATES & CENTRAL BANK POLICY</div>
+                <div class="card-body overflow-auto" style="max-height: 300px;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>COUNTRY</th>
+                                <th>CENTRAL BANK</th>
+                                <th>POLICY RATE</th>
+                                <th>PREV RATE</th>
+                                <th>CHANGE</th>
+                                <th>NEXT MEETING</th>
+                                <th>10Y YIELD</th>
+                                <th>SPREAD</th>
+                                <th>CURRENCY</th>
+                                <th>FX %CHG</th>
+                                <th>VS USD</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ratesTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- CRYPTO -->
+        <div id="view-crypto" class="view-section">
+            <div class="grid-3 mb-2">
+                <div class="card">
+                    <div class="card-header">TOTAL MARKET CAP</div>
+                    <div class="card-body center">
+                        <div class="text-xl amber bold mb-1">$2.34T</div>
+                        <div class="text-xs muted mb-3">GLOBAL CRYPTO MARKET</div>
+                        <div style="width: 80px; height: 80px; margin: 0 auto; border: 4px solid var(--amber-dim); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative;">
+                            <div style="text-align: center;">
+                                <div class="text-xs muted">BTC</div>
+                                <div class="amber bold">52%</div>
+                            </div>
+                            <div style="position: absolute; inset: -4px; border: 4px solid transparent; border-top-color: var(--amber-primary); border-radius: 50%; transform: rotate(45deg);"></div>
+                        </div>
+                        <div class="flex justify-between mt-3 text-xs">
+                            <div>
+                                <div class="up bold">BTC 52%</div>
+                                <div class="blue bold">ETH 10%</div>
+                                <div class="muted">OTHERS 38%</div>
+                            </div>
+                            <div class="right">
+                                <div class="down bold">-1.15% 24h</div>
+                                <div class="muted">Vol: $89B</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">BTC DOMINANCE TREND</div>
+                    <div class="card-body">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="bold">BTC.D</span>
+                            <span class="text-lg amber bold">52.4%</span>
+                        </div>
+                        <div class="text-xs muted mb-3">BITCOIN MARKET DOMINANCE</div>
+                        
+                        <div class="mb-3">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>ETH DOMINANCE</span>
+                                <span class="blue bold">9.8%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 9.8%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>STABLECOINS</span>
+                                <span class="bold">8.2%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 8.2%; background: linear-gradient(90deg, var(--text-secondary), var(--text-muted));"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">CRYPTO FEAR & GREED</div>
+                    <div class="card-body center">
+                        <div style="font-size: 48px; color: var(--amber-primary); font-weight: 700; text-shadow: 0 0 20px rgba(255, 179, 71, 0.4);">47</div>
+                        <div class="amber bold mb-2">NEUTRAL</div>
+                        <div class="text-xs muted mb-3">Last updated: 2 hours ago</div>
+                        <div class="flex justify-between text-xs">
+                            <span class="down">0-20 Extreme Fear</span>
+                            <span class="up">80-100 Extreme Greed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">TOP 10 CRYPTOCURRENCIES BY MARKET CAP</div>
+                <div class="card-body overflow-auto" style="max-height: 400px;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>RANK</th>
+                                <th>NAME</th>
+                                <th>SYMBOL</th>
+                                <th>PRICE</th>
+                                <th>24H %</th>
+                                <th>7D %</th>
+                                <th>MARKET CAP</th>
+                                <th>VOLUME(24H)</th>
+                                <th>CIRC SUPPLY</th>
+                                <th>MAX SUPPLY</th>
+                                <th>DOMINANCE</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cryptoTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ETF CENTER - 10 Families -->
+        <div id="view-etfs" class="view-section">
+            <div class="card mb-2">
+                <div class="card-header">THEMATIC ETF FAMILIES - BY CATEGORY</div>
+                <div class="card-body">
+                    <div class="grid-5" id="thematicEtfFamilies"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">ETF DETAIL TABLE - COMPREHENSIVE METRICS</div>
+                <div class="card-body overflow-auto" style="max-height: 500px;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>TICKER</th>
+                                <th>THEME</th>
+                                <th>REC</th>
+                                <th>PRICE</th>
+                                <th>CHG%</th>
+                                <th>OPEN</th>
+                                <th>HIGH</th>
+                                <th>LOW</th>
+                                <th>VOLUME</th>
+                                <th>AVG VOL</th>
+                                <th>52W HIGH</th>
+                                <th>52W LOW</th>
+                                <th>P/E</th>
+                                <th>P/B</th>
+                                <th>BETA</th>
+                                <th>AUM</th>
+                                <th>YIELD</th>
+                            </tr>
+                        </thead>
+                        <tbody id="etfDetailTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+const API_BASE = 'https://mini-finapi.vercel.app/api';
+const state = {
+    cache: new Map(),
+    data: {},
+    currentView: 'outlook'
+};
+
+// Clock
+setInterval(() => {
+    const now = new Date();
+    document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', {
+        hour12: false, timeZone: 'America/New_York'
+    });
+}, 1000);
+
+// Fetch with cache
+async function fetchWithCache(url) {
+    if (state.cache.has(url)) {
+        return state.cache.get(url);
+    }
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        state.cache.set(url, data);
+        setTimeout(() => state.cache.delete(url), 60000);
+        return data;
+    } catch (e) {
+        console.error('Fetch error:', e);
+        throw e;
+    }
+}
+
+// Initialize
+async function init() {
+    await fetchAllData();
+    renderAll();
+    setInterval(fetchAllData, 30000);
+}
+
+async function fetchAllData() {
+    const indices = ['SPY', 'QQQ', 'IWM', 'DIA'];
+    const sectors = ['XLF', 'XLK', 'XLE', 'XLV', 'XLI', 'XLP', 'XLY', 'XLU', 'XLRE', 'XLC', 'XLB'];
+    const thematicEtfs = ['ARKK', 'ARKQ', 'ARKW', 'ARKG', 'ARKF', 'ARKX', 'BOTZ', 'LIT', 'ICLN', 'SMH', 'CLOU', 'FINX', 'SOCL', 'CIBR', 'PHO'];
+    const innovationStocks = ['NVDA', 'TSLA', 'AVGO', 'AMD', 'CRM', 'PLTR', 'INTC', 'SNOW', 'COIN', 'SQ', 'SOFI', 'RKLB', 'ASTS', 'AI', 'PATH'];
+    const bonds = ['TLT', 'HYG', 'LQD', 'SHY', 'IEF'];
+    
+    const allTickers = [...new Set([...indices, ...sectors, ...thematicEtfs, ...innovationStocks, ...bonds])];
+    
+    try {
+        const data = await fetchWithCache(`${API_BASE}/ticker?ticker=${allTickers.join(',')}`);
+        if (Array.isArray(data)) {
+            data.forEach(d => {
+                if (d.ticker) state.data[d.ticker] = d;
+            });
+        }
+    } catch (e) {
+        console.error('Failed to fetch data:', e);
+    }
+}
+
+function renderAll() {
+    renderTicker();
+    renderOutlook();
+    renderSectors();
+    renderAssets();
+    renderStocks();
+    renderBonds();
+    renderCrypto();
+    renderETFs();
+    loadCharts();
+}
+
+function getRecBadge(change) {
+    if (change > 2) return '<span class="rec-badge rec-buy">BUY</span>';
+    if (change < -2) return '<span class="rec-badge rec-sell">SELL</span>';
+    return '<span class="rec-badge rec-hold">HOLD</span>';
+}
+
+function renderTicker() {
+    const items = Object.values(state.data).slice(0, 20).map(d => {
+        const change = parseFloat(d.main_info?.oneDayChange) || 0;
+        const isUp = change >= 0;
+        const triangle = isUp ? 'triangle-up' : 'triangle-down';
+        return `
+            <div class="ticker-item" onclick="focusSymbol('${d.ticker}')">
+                <span class="ticker-symbol">${d.ticker}</span>
+                <span class="ticker-price">${d.main_info?.currentPrice?.toFixed(2)}</span>
+                <span class="ticker-change ${triangle} ${isUp ? 'up' : 'down'}">${Math.abs(change).toFixed(2)}%</span>
+            </div>
+        `;
+    }).join('');
+    
+    const staticItems = `
+        <div class="ticker-item">
+            <span class="ticker-symbol">VIX</span>
+            <span class="ticker-price">19.74</span>
+            <span class="ticker-change triangle-up up">+10.09%</span>
+        </div>
+        <div class="ticker-item">
+            <span class="ticker-symbol">DXY</span>
+            <span class="ticker-price">97.74</span>
+            <span class="ticker-change triangle-down down">-0.06%</span>
+        </div>
+        <div class="ticker-item">
+            <span class="ticker-symbol">BTC</span>
+            <span class="ticker-price">67,963</span>
+            <span class="ticker-change triangle-down down">-1.15%</span>
+        </div>
+        <div class="ticker-item">
+            <span class="ticker-symbol">ETH</span>
+            <span class="ticker-price">2,034</span>
+            <span class="ticker-change triangle-down down">-1.79%</span>
+        </div>
+    `;
+    
+    document.getElementById('tickerTape').innerHTML = items + staticItems + items + staticItems;
+}
+
+function renderOutlook() {
+    const indices = [
+        {sym: 'SPY', name: 'S&P 500', id: 'spyCard'},
+        {sym: 'QQQ', name: 'NASDAQ 100', id: 'qqqCard'},
+        {sym: 'IWM', name: 'RUSSELL 2000', id: 'iwmCard'},
+        {sym: 'DIA', name: 'DOW JONES', id: 'diaCard'}
+    ];
+    
+    indices.forEach(idx => {
+        const d = state.data[idx.sym];
+        if (!d) return;
+        const change = parseFloat(d.main_info?.oneDayChange) || 0;
+        const isUp = change >= 0;
+        const triangle = isUp ? 'triangle-up' : 'triangle-down';
+        const p = d.main_info;
+        const pp = d.price_performance;
+        
+        document.getElementById(idx.id).innerHTML = `
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <div class="text-xs muted mb-1">${idx.name}</div>
+                    <div class="text-2xl bold">${p?.currentPrice?.toFixed(2)}</div>
+                </div>
+                <div class="right">
+                    <div class="${triangle} ${isUp ? 'up' : 'down'} text-lg">${isUp ? '+' : ''}${change.toFixed(2)}%</div>
+                    <div class="text-xs muted mt-1">${(p?.currentPrice - pp?.previousClose).toFixed(2)}</div>
+                </div>
+            </div>
+            <div class="grid-2 gap-1 text-xs mt-2 pt-2 border-t" style="border-color: var(--border-color);">
+                <div class="flex justify-between"><span class="muted">Open:</span><span>${pp?.open?.toFixed(2)}</span></div>
+                <div class="flex justify-between"><span class="muted">High:</span><span class="up">${pp?.dayHigh?.toFixed(2)}</span></div>
+                <div class="flex justify-between"><span class="muted">Low:</span><span class="down">${pp?.dayLow?.toFixed(2)}</span></div>
+                <div class="flex justify-between"><span class="muted">Vol:</span><span>${formatVolume(d.trading_info?.volume)}</span></div>
+            </div>
+            <div class="mt-2 pt-2 border-t flex justify-between text-xs" style="border-color: var(--border-color);">
+                <span class="muted">P/E: ${p?.PE?.toFixed(1) || '--'}</span>
+                <span class="muted">Beta: ${d.risk?.beta3Year?.toFixed(2) || '--'}</span>
+            </div>
+        `;
+    });
+
+    const allIndices = ['SPY', 'QQQ', 'IWM', 'DIA', 'ARKK', 'SMH', 'XLF', 'XLK', 'XLE', 'TLT'];
+    document.getElementById('indicesDetailTable').innerHTML = allIndices.map(sym => {
+        const d = state.data[sym];
+        if (!d) return '';
+        const change = parseFloat(d.main_info?.oneDayChange) || 0;
+        const isUp = change >= 0;
+        const triangle = isUp ? 'triangle-up' : 'triangle-down';
+        const p = d.main_info;
+        const pp = d.price_performance;
+        const ti = d.trading_info;
+        
+        return `
+            <tr>
+                <td><span class="ticker-badge">${sym}</span></td>
+                <td>${d.shortName?.substring(0, 20)}</td>
+                <td class="right bold">${p?.currentPrice?.toFixed(2)}</td>
+                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${(p?.currentPrice - pp?.previousClose).toFixed(2)}</td>
+                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
+                <td class="right muted">${pp?.open?.toFixed(2)}</td>
+                <td class="right up">${pp?.dayHigh?.toFixed(2)}</td>
+                <td class="right down">${pp?.dayLow?.toFixed(2)}</td>
+                <td class="right muted">${pp?.previousClose?.toFixed(2)}</td>
+                <td class="right muted">${formatVolume(ti?.volume)}</td>
+                <td class="right muted">${formatVolume(ti?.averageVolume)}</td>
+                <td class="right muted">${pp?.fiftyTwoWeekHigh?.toFixed(0)}</td>
+                <td class="right muted">${pp?.fiftyTwoWeekLow?.toFixed(0)}</td>
+                <td class="right">${p?.PE?.toFixed(1) || '--'}</td>
+                <td class="right">${d.risk?.beta3Year?.toFixed(2) || '--'}</td>
+                <td class="right muted">${d.valuation?.marketCap || p?.marketCap || '--'}</td>
+            </tr>
+        `;
+    }).join('');
+
+    const nasdaqData = state.data['QQQ'];
+    const news = nasdaqData?.recent_news || [];
+    document.getElementById('newsFeedOutlook').innerHTML = news.slice(0, 10).map(n => {
+        const hours = Math.floor((new Date() - new Date(n.pubDate)) / 3600000);
+        const time = hours < 1 ? 'NOW' : hours < 24 ? `${hours}H AGO` : `${Math.floor(hours/24)}D AGO`;
+        return `
+            <div class="news-item">
+                <div class="flex justify-between mb-1">
+                    <span class="news-time">${time}</span>
+                    <span class="news-source">${n.provider}</span>
+                </div>
+                <div class="text-xs" style="line-height: 1.4;">${n.title}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+function renderSectors() {
+    const sectors = [
+        {t: 'XLK', n: 'TECH', weight: 28.5},
+        {t: 'XLF', n: 'FIN', weight: 12.8},
+        {t: 'XLV', n: 'HLTH', weight: 11.2},
+        {t: 'XLY', n: 'DISC', weight: 10.5},
+        {t: 'XLI', n: 'INDU', weight: 8.4},
+        {t: 'XLP', n: 'STPL', weight: 6.2},
+        {t: 'XLE', n: 'ENRG', weight: 3.8},
+        {t: 'XLU', n: 'UTIL', weight: 2.5},
+        {t: 'XLB', n: 'MAT', weight: 2.4},
+        {t: 'XLRE', n: 'REIT', weight: 2.2},
+        {t: 'XLC', n: 'COMS', weight: 8.5}
+    ];
+
+    // Square Heatmap
+    document.getElementById('sectorHeatmap').innerHTML = sectors.map(s => {
+        const d = state.data[s.t];
+        if (!d) return '';
+        const change = parseFloat(d.main_info?.oneDayChange) || 0;
+        const isUp = change >= 0;
+        const intensity = Math.min(Math.abs(change) * 20, 100);
+        
+        let bg;
+        if (isUp) {
+            bg = `linear-gradient(145deg, rgba(74, 222, 128, ${0.2 + intensity*0.005}) 0%, rgba(34, 197, 94, ${0.15 + intensity*0.003}) 100%)`;
+        } else {
+            bg = `linear-gradient(145deg, rgba(248, 113, 113, ${0.2 + intensity*0.005}) 0%, rgba(239, 68, 68, ${0.15 + intensity*0.003}) 100%)`;
+        }
+        
+        return `
+            <div class="heatmap-cell" style="background: ${bg}; border-color: ${isUp ? 'rgba(74,222,128,0.3)' : 'rgba(248,113,113,0.3)'};">
+                <div class="heatmap-label" style="color: ${isUp ? 'var(--accent-green)' : 'var(--accent-red)'};">${s.n}</div>
+                <div class="heatmap-change" style="color: ${isUp ? 'var(--accent-green-dim)' : 'var(--accent-red-dim)'};">${change > 0 ? '+' : ''}${change.toFixed(2)}%</div>
+                <div class="heatmap-weight">${s.weight}%</div>
+            </div>
+        `;
+    }).join('');
+
+    document.getElementById('sectorTableBody').innerHTML = sectors.map(s => {
+        const d = state.data[s.t];
+        if (!d) return '';
+        const change = parseFloat(d.main_info?.oneDayChange) || 0;
+        const isUp = change >= 0;
+        const triangle = isUp ? 'triangle-up' : 'triangle-down';
+        const p = d.main_info;
+        const pp = d.price_performance;
+        const ti = d.trading_info;
+        
+        return `
+            <tr>
+                <td class="amber bold">${s.n}</td>
+                <td><span class="ticker-badge">${s.t}</span></td>
+                <td>${getRecBadge(change)}</td>
+                <td class="right bold">${p?.currentPrice?.toFixed(2)}</td>
+                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${(p?.currentPrice - pp?.previousClose).toFixed(2)}</td>
+                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
+                <td class="right muted">${pp?.open?.toFixed(2)}</td>
+                <td class="right up">${pp?.dayHigh?.toFixed(2)}</td>
+                <td class="right down">${pp?.dayLow?.toFixed(2)}</td>
+                <td class="right muted">${formatVolume(ti?.volume)}</td>
+                <td class="right muted">${formatVolume(ti?.averageVolume)}</td>
+                <td class="right muted">${pp?.fiftyTwoWeekHigh?.toFixed(0)}</td>
+                <td class="right muted">${pp?.fiftyTwoWeekLow?.toFixed(0)}</td>
+                <td class="right">${p?.PE?.toFixed(1) || '--'}</td>
+                <td class="right">${d.valuation?.priceToBook?.toFixed(2) || '--'}</td>
+                <td class="right">${d.risk?.beta3Year?.toFixed(2) || '--'}</td>
+                <td class="right muted">${d.valuation?.marketCap || '--'}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function renderAssets() {
+    const etfList = ['SPY', 'QQQ', 'IWM', 'XLF', 'XLK', 'XLE', 'VIXY', 'TLT', 'HYG', 'LQD', 'ARKK', 'SMH', 'BOTZ', 'LIT', 'ICLN', 'XBI', 'ITA', 'XRT', 'REM', 'IYR'];
+    
+    document.getElementById('etfCardsGrid').innerHTML = etfList.map(t => {
+        const d = state.data[t];
+        if (!d) return '';
+        const change = parseFloat(d.main_info?.oneDayChange) || 0;
+        const isUp = change >= 0;
+        const p = d.main_info;
+        
+        return `
+            <div class="mini-card" style="border-left: 3px solid ${isUp ? 'var(--accent-green)' : 'var(--accent-red)'};">
+                <div class="symbol-tag">${t}</div>
+                <div class="flex justify-between items-start mt-4">
+                    <span class="amber bold">${t}</span>
+                    <span class="${isUp ? 'up' : 'down'} text-xs bold">${isUp ? '+' : ''}${change.toFixed(2)}%</span>
+                </div>
+                <div class="text-xs muted mt-1 truncate">${d.shortName?.substring(0, 25)}</div>
+                <div class="flex justify-between items-end mt-2">
+                    <span class="bold text-lg">${p?.currentPrice?.toFixed(2)}</span>
+                    <span class="text-xs muted">P/E: ${p?.PE?.toFixed(1) || '--'}</span>
+                </div>
+                <div class="mt-2 pt-2 border-t flex justify-between text-xs" style="border-color: var(--border-color);">
+                    <span class="muted">Vol: ${formatVolume(d.trading_info?.volume)}</span>
+                    <span class="muted">Beta: ${d.risk?.beta3Year?.toFixed(2) || '--'}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    document.getElementById('etfFlowTable').innerHTML = etfList.slice(0, 15).map(t => {
+        const d = state.data[t];
+        if (!d) return '';
+        const change = parseFloat(d.main_info?.oneDayChange) || 0;
+        const isUp = change >= 0;
+        const triangle = isUp ? 'triangle-up' : 'triangle-down';
+        const p = d.main_info;
+        const pp = d.price_performance;
+        const ti = d.trading_info;
+        
+        return `
+            <tr>
+                <td><span class="ticker-badge">${t}</span></td>
+                <td>${d.shortName?.substring(0, 25)}</td>
+                <td>${getRecBadge(change)}</td>
+                <td class="right bold">${p?.currentPrice?.toFixed(2)}</td>
+                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
+                <td class="right muted">${pp?.open?.toFixed(2)}</td>
+                <td class="right up">${pp?.dayHigh?.toFixed(2)}</td>
+                <td class="right down">${pp?.dayLow?.toFixed(2)}</td>
+                <td class="right muted">${formatVolume(ti?.volume)}</td>
+                <td class="right muted">${formatVolume(ti?.averageVolume)}</td>
+                <td class="right muted">${pp?.fiftyTwoWeekHigh?.toFixed(0)}</td>
+                <td class="right muted">${pp?.fiftyTwoWeekLow?.toFixed(0)}</td>
+                <td class="right">${p?.PE?.toFixed(1) || '--'}</td>
+                <td class="right">${d.valuation?.priceToBook?.toFixed(2) || '--'}</td>
+                <td class="right">${d.risk?.beta3Year?.toFixed(2) || '--'}</td>
+                <td class="right muted">${d.valuation?.marketCap || '--'}</td>
+                <td class="right muted">${p?.marketCap || '--'}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function renderStocks() {
+    const stocks = ['NVDA', 'TSLA', 'AVGO', 'AMD', 'CRM', 'PLTR', 'INTC', 'SNOW', 'COIN', 'SQ', 'SOFI', 'RKLB', 'ASTS', 'AI', 'PATH'];
+    const themes = {
+        NVDA: 'AI/SEMICON', TSLA: 'EV/ROBOTICS', AVGO: 'AI/CHIPS', AMD: 'AI/CHIPS',
+        CRM: 'AI/SAAS', PLTR: 'AI/BIG DATA', INTC: 'SEMICON', SNOW: 'CLOUD/AI',
+        COIN: 'BLOCKCHAIN', SQ: 'FINTECH', SOFI: 'FINTECH', RKLB: 'SPACE',
+        ASTS: 'SPACE/TELCO', AI: 'AI/ENTERPRISE', PATH: 'AI/AUTOMATION'
+    };
+    
+    document.getElementById('stocksTableBody').innerHTML = stocks.map(s => {
+        const d = state.data[s];
+        if (!d) return '';
+        const change = parseFloat(d.main_info?.oneDayChange) || 0;
+        const isUp = change >= 0;
+        const triangle = isUp ? 'triangle-up' : 'triangle-down';
+        const p = d.main_info;
+        const pp = d.price_performance;
+        const ti = d.trading_info;
+        const eps = p?.PE ? (p.currentPrice / p.PE).toFixed(2) : '--';
+        const newsCount = d.recent_news?.length || 0;
+        
+        return `
+            <tr>
+                <td><span class="ticker-badge">${s}</span></td>
+                <td>${d.shortName?.substring(0, 22)}</td>
+                <td><span class="cyan bold">${themes[s] || 'TECH'}</span></td>
+                <td>${getRecBadge(change)}</td>
+                <td class="right bold">${p?.currentPrice?.toFixed(2)}</td>
+                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${(p?.currentPrice - pp?.previousClose).toFixed(2)}</td>
+                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
+                <td class="right muted">${pp?.open?.toFixed(2)}</td>
+                <td class="right up">${pp?.dayHigh?.toFixed(2)}</td>
+                <td class="right down">${pp?.dayLow?.toFixed(2)}</td>
+                <td class="right muted">${formatVolume(ti?.volume)}</td>
+                <td class="right muted">${formatVolume(ti?.averageVolume)}</td>
+                <td class="right muted">${p?.marketCap || '--'}</td>
+                <td class="right">${p?.PE?.toFixed(1) || '--'}</td>
+                <td class="right">${eps}</td>
+                <td class="right">${d.risk?.beta3Year?.toFixed(2) || '--'}</td>
+                <td class="right muted">${pp?.fiftyTwoWeekHigh?.toFixed(0)}</td>
+                <td class="right muted">${pp?.fiftyTwoWeekLow?.toFixed(0)}</td>
+                <td class="right ${newsCount > 5 ? 'amber bold' : 'muted'}">${newsCount}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function renderBonds() {
+    const yields = [
+        {m: '1M', v: 4.52, h: 90}, {m: '3M', v: 4.42, h: 88}, {m: '6M', v: 4.38, h: 87},
+        {m: '1Y', v: 4.22, h: 84}, {m: '2Y', v: 4.15, h: 83}, {m: '3Y', v: 4.18, h: 83},
+        {m: '5Y', v: 4.25, h: 85}, {m: '7Y', v: 4.28, h: 86}, {m: '10Y', v: 4.32, h: 86},
+        {m: '20Y', v: 4.48, h: 90}, {m: '30Y', v: 4.58, h: 92}
+    ];
+
+    document.getElementById('yieldCurve').innerHTML = yields.map(y => `
+        <div class="yield-bar">
+            <div class="yield-value">${y.v}%</div>
+            <div class="yield-fill" style="height: ${y.h}%;"></div>
+            <div class="yield-label">${y.m}</div>
+        </div>
+    `).join('');
+
+    const forex = [
+        {p: 'EUR/USD', r: 1.0845, c: 0.12}, {p: 'GBP/USD', r: 1.2645, c: -0.08},
+        {p: 'USD/JPY', r: 149.85, c: 0.45}, {p: 'USD/CHF', r: 0.8945, c: 0.22},
+        {p: 'AUD/USD', r: 0.6245, c: -0.35}, {p: 'USD/CAD', r: 1.4245, c: 0.15}
+    ];
+    
+    document.getElementById('forexGrid').innerHTML = forex.map(f => {
+        const isUp = f.c >= 0;
+        return `
+            <div class="mini-card center">
+                <div class="amber bold mb-1">${f.p}</div>
+                <div class="text-lg bold mb-1">${f.r.toFixed(4)}</div>
+                <div class="${isUp ? 'up' : 'down'} text-xs bold">${isUp ? '+' : ''}${f.c}%</div>
+            </div>
+        `;
+    }).join('');
+
+    const rates = [
+        {c: 'USA', cb: 'FED', r: '4.25-4.50%', p: '4.25-4.50%', ch: '0.00', n: 'MAR 19', y10: '4.32%', sp: '0.07%', cc: 'DXY', cp: -0.06, vs: 'Base'},
+        {c: 'EUROZONE', cb: 'ECB', r: '2.90%', p: '2.90%', ch: '0.00', n: 'MAR 06', y10: '2.45%', sp: '-0.45%', cc: 'EUR', cp: 0.12, vs: '+0.18'},
+        {c: 'UK', cb: 'BOE', r: '4.50%', p: '4.75%', ch: '-0.25', n: 'MAR 20', y10: '4.52%', sp: '0.02%', cc: 'GBP', cp: -0.08, vs: '-0.14'},
+        {c: 'JAPAN', cb: 'BOJ', r: '0.50%', p: '0.25%', ch: '+0.25', n: 'MAR 19', y10: '1.35%', sp: '0.85%', cc: 'JPY', cp: -0.45, vs: '-0.51'},
+        {c: 'CANADA', cb: 'BOC', r: '3.00%', p: '3.25%', ch: '-0.25', n: 'MAR 12', y10: '3.22%', sp: '0.22%', cc: 'CAD', cp: -0.15, vs: '-0.21'},
+        {c: 'AUSTRALIA', cb: 'RBA', r: '4.10%', p: '4.35%', ch: '-0.25', n: 'FEB 18', y10: '4.45%', sp: '0.35%', cc: 'AUD', cp: 0.35, vs: '+0.41'}
+    ];
+    
+    document.getElementById('ratesTableBody').innerHTML = rates.map(r => {
+        const isUp = r.cp >= 0;
+        return `
+            <tr>
+                <td class="bold">${r.c}</td>
+                <td class="muted">${r.cb}</td>
+                <td class="amber bold">${r.r}</td>
+                <td class="muted">${r.p}</td>
+                <td class="${r.ch.includes('+') ? 'up' : r.ch.includes('-') ? 'down' : 'muted'} bold">${r.ch}</td>
+                <td class="blue">${r.n}</td>
+                <td class="right">${r.y10}</td>
+                <td class="right">${r.sp}</td>
+                <td class="amber">${r.cc}</td>
+                <td class="right ${isUp ? 'up' : 'down'} bold">${isUp ? '+' : ''}${r.cp}%</td>
+                <td class="right muted">${r.vs}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function renderCrypto() {
+    const cryptos = [
+        {r: 1, n: 'Bitcoin', s: 'BTC', p: 67963.04, c24: -1.15, c7: -2.4, m: '1.35T', v: '41.9B', cs: '19.8M', ms: '21M', d: '52.4%'},
+        {r: 2, n: 'Ethereum', s: 'ETH', p: 2034.63, c24: -1.79, c7: -5.2, m: '245.6B', v: '22.6B', cs: '120.7M', ms: '∞', d: '9.8%'},
+        {r: 3, n: 'Tether', s: 'USDT', p: 1.00, c24: -0.00, c7: 0.01, m: '183.6B', v: '82.5B', cs: '183.6B', ms: '--', d: '7.3%'},
+        {r: 4, n: 'BNB', s: 'BNB', p: 629.92, c24: 0.17, c7: 2.5, m: '85.9B', v: '2.8B', cs: '136.4M', ms: '200M', d: '3.4%'},
+        {r: 5, n: 'XRP', s: 'XRP', p: 1.41, c24: -3.24, c7: -8.5, m: '85.7B', v: '3.2B', cs: '61.0B', ms: '100B', d: '3.4%'},
+        {r: 6, n: 'USDC', s: 'USDC', p: 1.00, c24: -0.02, c7: 0.00, m: '75.3B', v: '11.6B', cs: '75.3B', ms: '--', d: '3.0%'},
+        {r: 7, n: 'Solana', s: 'SOL', p: 86.99, c24: -1.00, c7: -12.5, m: '49.5B', v: '3.8B', cs: '568.8M', ms: '--', d: '1.9%'},
+        {r: 8, n: 'TRON', s: 'TRX', p: 0.28, c24: -0.70, c7: 5.2, m: '27.0B', v: '444.8M', cs: '94.7B', ms: '--', d: '1.1%'},
+        {r: 9, n: 'Dogecoin', s: 'DOGE', p: 0.098, c24: -1.96, c7: -15.2, m: '16.7B', v: '1.1B', cs: '168.9B', ms: '--', d: '0.6%'},
+        {r: 10, n: 'Cardano', s: 'ADA', p: 0.29, c24: -1.40, c7: -8.8, m: '10.6B', v: '611.1M', cs: '36.1B', ms: '45B', d: '0.4%'}
+    ];
+    
+    document.getElementById('cryptoTableBody').innerHTML = cryptos.map(c => {
+        const isUp = c.c24 >= 0;
+        const isUp7 = c.c7 >= 0;
+        return `
+            <tr>
+                <td class="amber bold">${c.r}</td>
+                <td class="bold">${c.n}</td>
+                <td class="blue bold">${c.s}</td>
+                <td class="right bold">${c.p.toLocaleString()}</td>
+                <td class="right ${isUp ? 'up' : 'down'} bold">${isUp ? '+' : ''}${c.c24}%</td>
+                <td class="right ${isUp7 ? 'up' : 'down'} bold">${isUp7 ? '+' : ''}${c.c7}%</td>
+                <td class="right">${c.m}</td>
+                <td class="right muted">${c.v}</td>
+                <td class="right muted">${c.cs}</td>
+                <td class="right muted">${c.ms}</td>
+                <td class="right amber bold">${c.d}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function renderETFs() {
+    // 10 ETF Families with 5 ETFs each
+    const etfFamilies = [
+        {
+            name: 'ARK INVEST',
+            theme: 'Disruptive Innovation',
+            etfs: [
+                {t: 'ARKK', n: 'Innovation'},
+                {t: 'ARKQ', n: 'Robotics'},
+                {t: 'ARKW', n: 'Web3/AI'},
+                {t: 'ARKG', n: 'Genomics'},
+                {t: 'ARKF', n: 'Fintech'}
+            ]
+        },
+        {
+            name: 'VANGUARD',
+            theme: 'Core Index',
+            etfs: [
+                {t: 'VOO', n: 'S&P 500'},
+                {t: 'VTI', n: 'Total Market'},
+                {t: 'VEA', n: 'Developed'},
+                {t: 'VWO', n: 'Emerging'},
+                {t: 'BND', n: 'Bonds'}
+            ]
+        },
+        {
+            name: 'ISHARES',
+            theme: 'Sector & Style',
+            etfs: [
+                {t: 'IVV', n: 'S&P 500'},
+                {t: 'IWM', n: 'Russell 2000'},
+                {t: 'EFA', n: 'EAFE'},
+                {t: 'AGG', n: 'Bonds'},
+                {t: 'IEMG', n: 'EM'}
+            ]
+        },
+        {
+            name: 'TECHNOLOGY',
+            theme: 'Semiconductors & AI',
+            etfs: [
+                {t: 'SMH', n: 'Semiconductors'},
+                {t: 'BOTZ', n: 'Robotics/AI'},
+                {t: 'CLOU', n: 'Cloud'},
+                {t: 'CIBR', n: 'Cybersecurity'},
+                {t: 'FINX', n: 'Fintech'}
+            ]
+        },
+        {
+            name: 'CLEAN ENERGY',
+            theme: 'Sustainability',
+            etfs: [
+                {t: 'ICLN', n: 'Global Clean'},
+                {t: 'LIT', n: 'Lithium'},
+                {t: 'TAN', n: 'Solar'},
+                {t: 'FAN', n: 'Wind'},
+                {t: 'PBW', n: 'WilderHill'}
+            ]
+        },
+        {
+            name: 'HEALTHCARE',
+            theme: 'Biotech & Pharma',
+            etfs: [
+                {t: 'XBI', n: 'Biotech'},
+                {t: 'IBB', n: 'Nasdaq Bio'},
+                {t: 'XLV', n: 'Health Care'},
+                {t: 'ARKG', n: 'Genomics'},
+                {t: 'PPH', n: 'Pharma'}
+            ]
+        },
+        {
+            name: 'COMMODITIES',
+            theme: 'Hard Assets',
+            etfs: [
+                {t: 'GLD', n: 'Gold'},
+                {t: 'SLV', n: 'Silver'},
+                {t: 'USO', n: 'Oil'},
+                {t: 'UNG', n: 'Natural Gas'},
+                {t: 'DBA', n: 'Agriculture'}
+            ]
+        },
+        {
+            name: 'REAL ESTATE',
+            theme: 'REITs & Property',
+            etfs: [
+                {t: 'VNQ', n: 'Real Estate'},
+                {t: 'SCHH', n: 'REITs'},
+                {t: 'IYR', n: 'US Real Estate'},
+                {t: 'REM', n: 'Mortgage REITs'},
+                {t: 'XLRE', n: 'S&P REITs'}
+            ]
+        },
+        {
+            name: 'FIXED INCOME',
+            theme: 'Bonds & Debt',
+            etfs: [
+                {t: 'TLT', n: '20+ Year'},
+                {t: 'HYG', n: 'High Yield'},
+                {t: 'LQD', n: 'Inv Grade'},
+                {t: 'BIL', n: '1-3 Month'},
+                {t: 'TIP', n: 'TIPS'}
+            ]
+        },
+        {
+            name: 'INTERNATIONAL',
+            theme: 'Global Exposure',
+            etfs: [
+                {t: 'VEU', n: 'All-World'},
+                {t: 'VWO', n: 'Emerging'},
+                {t: 'IEFA', n: 'EAFE'},
+                {t: 'EWJ', n: 'Japan'},
+                {t: 'EEM', n: 'Emerging Mkts'}
+            ]
+        }
+    ];
+
+    // Render ETF Families
+    document.getElementById('thematicEtfFamilies').innerHTML = etfFamilies.map(family => {
+        const etfRows = family.etfs.map(e => {
+            const d = state.data[e.t];
+            const change = d ? parseFloat(d.main_info?.oneDayChange) || 0 : (Math.random() * 4 - 2);
+            const isUp = change >= 0;
+            const price = d ? d.main_info?.currentPrice?.toFixed(2) : (Math.random() * 100 + 50).toFixed(2);
+            
+            return `
+                <div class="etf-mini-row">
+                    <div class="flex items-center gap-2">
+                        <span class="ticker-badge" style="font-size: 9px; padding: 1px 6px;">${e.t}</span>
+                        <span class="muted" style="font-size: 9px;">${e.n}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="bold">${price}</span>
+                        <span class="${isUp ? 'up' : 'down'} text-xs" style="font-size: 9px;">${isUp ? '+' : ''}${change.toFixed(2)}%</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        return `
+            <div class="etf-family-card">
+                <div class="etf-family-header">
+                    <div>${family.name}</div>
+                    <div style="font-size: 8px; opacity: 0.7;">${family.theme}</div>
+                </div>
+                <div class="etf-family-list">
+                    ${etfRows}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // Render Detail Table
+    const allEtfs = etfFamilies.flatMap(f => f.etfs.map(e => e.t));
+    document.getElementById('etfDetailTable').innerHTML = allEtfs.map(t => {
+        const d = state.data[t];
+        if (!d) return '';
+        const change = parseFloat(d.main_info?.oneDayChange) || 0;
+        const isUp = change >= 0;
+        const triangle = isUp ? 'triangle-up' : 'triangle-down';
+        const p = d.main_info;
+        const pp = d.price_performance;
+        const ti = d.trading_info;
+        
+        const family = etfFamilies.find(f => f.etfs.some(e => e.t === t));
+        
+        return `
+            <tr>
+                <td><span class="ticker-badge">${t}</span></td>
+                <td>${family?.theme || 'THEMATIC'}</td>
+                <td>${getRecBadge(change)}</td>
+                <td class="right bold">${p?.currentPrice?.toFixed(2)}</td>
+                <td class="right ${triangle} ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change.toFixed(2)}%</td>
+                <td class="right muted">${pp?.open?.toFixed(2)}</td>
+                <td class="right up">${pp?.dayHigh?.toFixed(2)}</td>
+                <td class="right down">${pp?.dayLow?.toFixed(2)}</td>
+                <td class="right muted">${formatVolume(ti?.volume)}</td>
+                <td class="right muted">${formatVolume(ti?.averageVolume)}</td>
+                <td class="right muted">${pp?.fiftyTwoWeekHigh?.toFixed(0)}</td>
+                <td class="right muted">${pp?.fiftyTwoWeekLow?.toFixed(0)}</td>
+                <td class="right">${p?.PE?.toFixed(1) || '--'}</td>
+                <td class="right">${d.valuation?.priceToBook?.toFixed(2) || '--'}</td>
+                <td class="right">${d.risk?.beta3Year?.toFixed(2) || '--'}</td>
+                <td class="right muted">${d.valuation?.marketCap || '--'}</td>
+                <td class="right muted">${d.dividends?.trailingAnnualDividendYield || '--'}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function loadCharts() {
+    loadTradingView('chartSPY', 'AMEX:SPY');
+    loadTradingView('chartDIA', 'AMEX:DIA');
+    loadTradingView('chartQQQ', 'NASDAQ:QQQ');
+}
+
+function loadTradingView(containerId, symbol) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    
+    const script = document.createElement('script');
+    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js';
+    script.innerHTML = JSON.stringify({
+        symbol: symbol,
+        width: '100%',
+        height: '100%',
+        locale: 'en',
+        dateRange: '1D',
+        colorTheme: 'dark',
+        trendLineColor: '#ffb347',
+        underLineColor: 'rgba(255, 179, 71, 0.1)',
+        isTransparent: true,
+        autosize: true,
+        largeChartUrl: ''
+    });
+    
+    const div = document.createElement('div');
+    div.className = 'tradingview-widget-container';
+    div.style.width = '100%';
+    div.style.height = '100%';
+    div.appendChild(script);
+    container.appendChild(div);
+}
+
+function formatVolume(num) {
+    if (!num) return '--';
+    if (num >= 1e9) return (num/1e9).toFixed(2) + 'B';
+    if (num >= 1e6) return (num/1e6).toFixed(2) + 'M';
+    if (num >= 1e3) return (num/1e3).toFixed(2) + 'K';
+    return num.toString();
+}
+
+function switchView(view) {
+    document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    
+    document.getElementById(`view-${view}`).classList.add('active');
+    event.target.classList.add('active');
+    state.currentView = view;
+    
+    if (view === 'outlook') setTimeout(loadCharts, 100);
+}
+
+function focusSymbol(symbol) {
+    document.getElementById('searchInput').value = symbol;
+}
+
+function searchTicker(q) {
+    if (!q) return;
+    q = q.toUpperCase();
+    alert(`Searching ${q}... (Would load detail view)`);
+}
+
+init();
+</script>
+
+</body>
+</html>
